@@ -1,7 +1,25 @@
 \chapter{Introduction}
+Big spatial data requires more efficient methods for storage
 
-Over the years, several thesis templates for \LaTeX{} have been developed by different groups at NTNU. Typically, there have been local templates for given study programmes, or different templates for the different study levels – bachelor, master, and \acrshort{phd}.\footnote{see, e.g., \url{https://github.com/COPCSE-NTNU/bachelor-thesis-NTNU} and \url{https://github.com/COPCSE-NTNU/master-theses-NTNU}}
+There are many different new algorithms trying to solve this
 
-Based on this experience, the \acrfull{CoPCSE}\footnote{\url{https://www.ntnu.no/wiki/display/copcse/Community+of+Practice+in+Computer+Science+Education+Home}} is hereby offering a template that should in principle be applicable for theses at all study levels. It is closely based on the standard \LaTeX{} \texttt{report} document class as well as previous thesis templates. Since the central regulations for thesis design have been relaxed – at least for some of the historical university colleges now part of NTNU – the template has been simlified and put closer to the default \LaTeX{} look and feel.
+For example reference based approaches like PRESS and Squish looking at an efficient heuristic. REST is a reference based data driven approach. Reference-based means that all trajectories are represented as a sequence of reference trajectories. The quality of the reference set is crucial, a good set has low redundancy and high coverage.
 
-The purpose of the present document is threefold. It should serve (i) as a description of the document class, (ii) as an example of how to use it, and (iii) as a thesis template.
+\cite{zhao2018rest} propsed the a novel approach "REST" which is, according to the authors:
+\begin{quote}
+    The first data-drive approach to compress trajectories in unconstrained space with both spatial and temporal dimensions considered.
+\end{quote}
+The results show it outperforming other state of the art methods in terms of compression ratio,runtime and storage space. This is because of the inherent adaptability from data driven compression and the large space savings from a reference based approach. In addition reference based compression provides another key advantage, namely being readable without decompression.
+
+%claim
+In this paper we will implement a version of REST with two adjustments aimed at reducing the most intensive process in the algorithm, namely the trajectory distance measure. The first change reduces the amount of distance measures required by using a spatial filter. The second change is reducing the runtime complexity of the algorithm for trajectory distance by using an approximate value. We believe this can improve the runtime of REST and make it usefull in a big data setting.
+
+In this paper we will compare the results from REST as propsed in \cite{zhao2018rest} and our version. As well as comparing REST to other trajectroy compression methods in order to support or refute the results from \cite{zhao2018rest}.
+
+From this we derive the following research questions:
+\begin{description}
+    \item[RQ1] Does the suggested spatial filter improve the runtime of the original REST algorithm?
+    \item[RQ2] Does the suggested approximation of the distance measure improve the runtime of the original REST algorithm without significantly worsening the precision?
+    \item[RQ3] Does our implementation of the original REST outperform state of the art methods in terms of compression ratio and runtime?
+    \item[RQ4] Does our implementation of the improved REST outperform state of the art methods in terms of compression ratio and runtime?
+\end{description}

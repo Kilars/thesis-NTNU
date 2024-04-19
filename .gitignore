@@ -20,3 +20,8 @@ thesis.alg
 thesis.glg
 thesis.gls
 *~
+.vscode/
+indent.log
+thesis.fdb*
+thesis.fls*
+thesis.synctex*
