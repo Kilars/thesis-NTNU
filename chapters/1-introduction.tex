@@ -1,22 +1,23 @@
 \chapter{Introduction}
-Big spatial data requires more efficient methods for storage
+\section{Motivation}
+% More and more spatial data -> compression methods for space saving -> in order to compress and to compare the quality of the compression we need trajectory similarity ( distance measure is a large part of compression )
 
-There are many different new algorithms trying to solve this
+In the era of digitilaztion more and more devices are generating data, in particular geodata, which is data containing the location of entities (like a car or a plane) and people. As well as sequences of locations which is known as trajectories. The sheer amount of data is challenging to handle because it is difficult to store and transmit. This data is useful in analysing movement patterns and gives insight in frequency of different paths.
 
-For example reference based approaches like PRESS and Squish looking at an efficient heuristic. REST is a reference based data driven approach. Reference-based means that all trajectories are represented as a sequence of reference trajectories. The quality of the reference set is crucial, a good set has low redundancy and high coverage.
-
-\cite{zhao2018rest} propsed the a novel approach "REST" which is, according to the authors:
+A common approach to solve this is to compress the data, this means storing it with less space while containing most of the same information. There exists many different compression methods for all kinds of data not only geodata, however there has also emerged som compression methods specific for trajectories. For example PRESS, which compresses trajectories by representing them using trajectories from a subset of the data. This method is known as a "reference-based" approach. The quality of the subset is crucial, a good set has low redundancy and high coverage. \cite{zhao2018rest} propsed another reference-based approach "REST" which is, according to the authors:
 \begin{quote}
-    The first data-drive approach to compress trajectories in unconstrained space with both spatial and temporal dimensions considered.
+    "The first data-driven approach to compress trajectories in unconstrained space with both spatial and temporal dimensions considered."
 \end{quote}
-The results show it outperforming other state of the art methods in terms of compression ratio,runtime and storage space. This is because of the inherent adaptability from data driven compression and the large space savings from a reference based approach. In addition reference based compression provides another key advantage, namely being readable without decompression.
+REST is a set of different methods which are all reference based and data driven. The different methods have different use cases, there are two main axes for the use cases: spatial-only/spatiotemporal and greedy/optimal. The results show REST outperforming other state of the art methods in terms of compression ratio, runtime and storage space. This is because of the inherent adaptability from data driven compression and the large space savings from a reference based approach.
 
+In addition reference based compression provides another key advantage, namely being readable without decompression. This increases the usefulness of the compression. The need for decompression is a major disadvantage because it requires another step before the data is readable. This means more infrastructure to perform the decompression, as well as the resources used in the decompression, which can be a resource-intensive process.
+
+\section{Research Questions}
 %claim
-In this paper we will implement a version of REST with two adjustments aimed at reducing the most intensive process in the algorithm, namely the trajectory distance measure. The first change reduces the amount of distance measures required by using a spatial filter. The second change is reducing the runtime complexity of the algorithm for trajectory distance by using an approximate value. We believe this can improve the runtime of REST and make it usefull in a big data setting.
+In this paper we will implement a version of REST for spatial-only compression with two adjustments aimed at reducing the most intensive process in the algorithm, namely the trajectory distance measure. The first change reduces the amount of distance measures required by using a spatial filter. The second change is reducing the runtime complexity of the algorithm for trajectory distance by using an approximate value. We believe this can improve the runtime of REST and make it usefull in a big data setting.
 
-In this paper we will compare the results from REST as propsed in \cite{zhao2018rest} and our version. As well as comparing REST to other trajectroy compression methods in order to support or refute the results from \cite{zhao2018rest}.
+In this paper we will compare the results from REST as propsed in \cite{zhao2018rest} and our version. As well as comparing REST to other state-of-the-art trajectroy compression methods in order to support or refute the results from \cite{zhao2018rest}. From this we derive the following research questions:
 
-From this we derive the following research questions:
 \begin{description}
     \item[RQ1] Does the suggested spatial filter improve the runtime of the original REST algorithm?
     \item[RQ2] Does the suggested approximation of the distance measure improve the runtime of the original REST algorithm without significantly worsening the precision?
