@@ -1,0 +1,36 @@
+\section{Introduction}
+
+\subsection{Motivation}
+In the modern era of geospatial data there is an increasing demand for efficient storage space and reduced transmission sizes. Particularily with regards to generated data, mobile devices, GPS units, and sensors continously transmit their location to servers worldwide. This leads to huge data volumes over time. In addition to the sheer volume being a challenge, the various use cases require substantial resources. Applications for geospatial data include location based recommendations like locating the nearest restaurant or more complex analysis of movement patterns. Alternatively a combination of both simple and complex analysis, for example a shortest path algorithm which considers traffic jams. Calculating the shortest path in a vaccum requires knowledge of the roadnetwork, while taking into account traffic jams calls for a broader understanding of movement patterns.
+
+The large quantities of data combined with resource-intensive analysis demands considerable computational power and storage space. Moreover, this scale of data processing leads us to the domain of Big Data. Here, optimzation is key for all parts of the system. Different methods to reduce file sizes and computations are essential, this is therefore a hot research topic. This thesis will specifically look at different trajectory compression methods and geospatial data formats.
+
+There are many existing trajectory compression techniques as this field is well explored. And yet, new techniques are still being developed. This is partly because of the development of new technologies in the field, but also as a result of new requirements for the compression itself. Additionally there are many different types of trajectories. For example trajectories from a road network representing movement, or unconstrained trajectories mapping the path of a hurricane. There is the spatial dimention to consider, but also the temporal dimention. This leads to many different ways to compare trajectory compression.
+
+Another large part of the research on geospatial data is data formats. Data format is a major factor in storage space and efficieny, there are many aspects to consider. Although most formats are eventually compressed to a binary format for storage, there are significant differences in size. Formats like Shapefile and GeoJSON have a verbose structure and a large amount of redundancy even when compressed to binary. However, in the case of GeoJSON this improves ease of use by making the format humanly readable. Other more optimal formats may not have the same benefits. Another category of data formats are binary encoded formats. These formats are purely binary, but have some specification which allows them to parse to geospatial data. The tradeoff is that they have decreased ease of use but increased performance, as they are usable in their encoded binary form.
+
+\subsection{Research Goals}
+In this thesis, we will combine modern methods for trajectory compression with modern geospatial data formats in order to handle large amounts of data efficiently. The main contributions of this thesis will be experimental results comparing different trajectory compression techniques and an indexing structure for querying compressed trajectory data. The specific trajectory compression algorithm is REST, which is described in depth in section \ref{sec:REST}. With regards to the geospatial format we will consider the format FlatGeoBuf which is a cloud optimized format for storing vector data according to \cite{tremmel2023comtiles}, see table \ref{cloud_native_formats}. This format is also explained in depth in section \ref{subsec:fgb}.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{ |c|c| }
+        \hline
+        \bf{Category}        & \bf{Formats}                       \\
+        \hline
+        Raster               & Cloud Optimized GeoTIFF (COG)      \\
+        \hline
+        Point Clouds         & Cloud Optimized Point Cloud (COPC) \\
+        \hline
+        N-dimentional Arrays & Zarr, TileDB                       \\
+        \hline
+        Vector               & FlatGeoBuf GeoParquet              \\
+        \hline
+        Tile archive         & PMTiles COMTiles                   \\
+        \hline
+    \end{tabular}
+    \caption{Categories of cloud optimized formats for storing geospatial data. From \cite{tremmel2023comtiles}}
+    \label{cloud_native_formats}
+\end{table}
+
+

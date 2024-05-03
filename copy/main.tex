@@ -1,0 +1,37 @@
+\documentclass{article}
+
+% Importing settings from our file "setup.sty"
+\usepackage{setup}
+
+\begin{document}
+
+% Inserting title page
+\import{./sections/}{title}
+
+% Defining front matter settings (Norsk: innstillinger for forord m.m.)
+\frontmatter
+
+% Inserting table of contents
+\tableofcontents
+
+% Inserting list of figures & list of tables
+\listoffigures
+\listoftables
+
+% Defining main matter settings (Norsk: innstillinger for hoveddelen av teksten)
+\mainmatter
+
+\import{./sections/}{introduction}
+\import{./sections/}{formats}
+\import{./sections/}{traj}
+\import{./sections/subsections}{error}
+\import{./sections/subsections}{performance_metrics}
+\import{./sections/}{relatedwork}
+
+\import{./sections/}{method}
+
+\newpage
+\printbibliography[heading = bibintoc]  % 'bibintoc' inserts our bibliography into the table of contents
+
+% End of document
+\end{document}

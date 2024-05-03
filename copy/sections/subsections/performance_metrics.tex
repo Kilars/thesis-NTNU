@@ -1,0 +1,6 @@
+\subsection{Performance Metrics}
+\subsubsection{Compression Ratio}
+Compression ratio measures the amount of data compressed. This is calculated as $C_{r} = \frac{|o|}{|c|}$, where $C_{r}$ is the compression ratio, $|o|$ is the size of the original data, and $|c|$ is the size of the compressed data. Storing a 10GB file with 5GB gives a compression ratio of $10 / 5 = 2$, meaning it was stored using half the original size. This can also be written as a 2:1 compression ratio.
+
+\subsubsection{Compression Performance}
+Compression performance measures the speed of compression as well as the resource usage. Compression speed is simply the time it took to compress measured in seconds. Resource usage, however can be measured in a variety of ways, this depends on what kind of usage you want to measure, for example memory usage or CPU time. Computer executions like these have variance in performance, therefore it is important to measure the average for multiple runs when doing an experiment, both for compression speed and resource usage. Additionally it is important that when comparing compression performance that the measures were gathered in the same environment, meaning the experiment was executed on the same computer with the same version of the program. Otherwise the results are not comparable.

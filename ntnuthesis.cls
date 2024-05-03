@@ -146,7 +146,7 @@
 \RequirePackage[charter, cal=cmcal]{mathdesign} % main font with math support
 \RequirePackage[scaled=.88]{berasans}       % sans serif font
 \RequirePackage[scaled=.82]{DejaVuSansMono} % monospace font (for code)
-\RequirePackage{listings}                   % code listings
+\RequirePackage{listings, listings-rust}                   % code listings
 \RequirePackage{etoolbox}                   % fixing list of listings spacing
 \RequirePackage{babel}                      % language specifics
 \RequirePackage{geometry}                   % page layout
@@ -179,6 +179,8 @@
 ]{biblatex}                                 % for bibliography
 \RequirePackage{csvsimple}                  % tables from csv files
 \RequirePackage{booktabs}                   % better formatting of tables
+\RequirePackage{diagbox}                    % for multicolumn tables
+\RequirePackage{wrapfig}
 \RequirePackage{gnuplottex}                 % for generating gnuplots on the fly
 \RequirePackage{hyperref}                   % interactive cross references
 \ifcapitalize
