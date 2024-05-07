@@ -1,11 +1,11 @@
-\begin{figure}[m]
+\begin{figure}[t]
     \begin{lstlisting}[
-        caption={Greedy MRT Expand algorithm from source code},
+        caption={Greedy MRT Search algorithm from source code},
         language=Rust,
         label=lst:ca_expand,
         numbers=left
     ]
-    fn greedy_mrt_expand<'a>(
+    fn greedy_mrt_search<'a>(
         candidate_reference_trajectories: &[&'a [Point]],
         st: &[Point],
         spatial_deviation: f64,
