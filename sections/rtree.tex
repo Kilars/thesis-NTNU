@@ -1,6 +1,8 @@
-\section{Packed Hilbert R-tree}
+\section{R-trees}
 \label{sec:rtree}
-A Packed Hilbert R-tree is an extension of the R-tree, a balanced tree used for multidimensional data, in our case, spatial data. From \cite{rtree}, a regular R-tree stores all data as leaf nodes on the same level. All leaves have minimum bounding rectangles (MBRs) that geometrically contain the data element of that node. Parent nodes also have MBRs, MBRs of parents geoemtrically conatin all MBRs of the children. An example of this is shown in figure \ref{fig:rtree}, with the corresponding data in figure \ref{fig:mbrs}. This allows for efficient spatial queries. When querying with a spatial filter, the system will only explore nodes that have MBRs overlapping with the spatial filter. For large datasets, this can lead to significant performance gains for many queries, as much fewer nodes need to be accessed.
+From \textcite{rtree}, an R-tree is a tree structure composed of nodes containing multi-dimensional data, facilitating range searches accross multiple dimensions. All data is stored as leaf nodes on the same level, which makes it a balanced tree. Each nodes is defined by a minimum bounding rectangle (MBR), which represent the range of the dimensions for that node and its child noeds. For leaf nodes the MBR represents the range of its data. A leaf node typically references data points rather than storing them directly in the tree. Figure \ref{fig:rtree} illustrates the node hierarchy within an R-tree, with the associated MBRs depicted in figure \ref{fig:mbrs}. An r-tree can be used to efficiently retrieve references to all data points within a certain range. This can drastically improves performance for queries in large datasets. When querying with an r-tree as a filter, only nodes with MBRs overlapping with the range of the query, potentially reducing the number of accessed nodes, and thereby also the number of accessed data points.
+
+A typical application for r-trees is storing geospatial data, however the structure is not limited to that. For example it can be used for sorting people by age and last name.
 
 \begin{figure}
     \centering
