@@ -23,13 +23,13 @@ The compression algorithm uses the reference set as a basis for compressing new 
 For the compression algorithm we implemented Greedy Spatial Compression \break (GSC) from REST. This is an algorithm that searches greedily for the best result. It consists of two parts: a greedy match search and a wrapper connecting compression sequences of subtrajectories.
 The matches are called Matchable Reference Trajectories and the definition is taken directly from \textcite{zhao2018rest}.
 \begin{quote}
-    Definition of Matchable Reference Trajectory (MRT) \textit{Given a sub-trajectory T(i,j) and a spatial deviation threshold $\epsilon_{s}$, its matchable reference trajectory set, denoted as M(T(i,j)), includes all the reference sub-trajectories with less-than-$\epsilon_{s}$ MaxDTW distance with T(i,j), i.e.,}
+    Definition of Matchable Reference Trajectory (MRT). \textit{Given a sub-trajectory T(i,j) and a spatial deviation threshold $\epsilon_{s}$, its matchable reference trajectory set, denoted as M(T(i,j)), includes all the reference sub-trajectories with less-than-$\epsilon_{s}$ MaxDTW distance with T(i,j), i.e.,}
     \begin{align*}
-        \hspace{1cm} M(T(i,j)) = \{ & \mathbb{T}(k,g) \mid \mathbb{T} \in \mathcal{R}, i \leq k \leq g \leq \left\lvert \mathbb{T} \right\rvert, \\
-        \hspace{1cm}                & \text{MaxDTW}(T(i,j), \mathbb{T}(k,g)) \}
+        \hspace*{-3cm} M(T(i,j)) = \{ & \mathbb{T}(k,g) \mid \mathbb{T} \in \mathcal{R}, i \leq k \leq g \leq \left\lvert \mathbb{T} \right\rvert, \\
+        \hspace*{-3cm}                & \text{MaxDTW}(T(i,j), \mathbb{T}(k,g)) \leq \epsilon_{s} \}
     \end{align*}
 \end{quote}
-From this and the properties of MaxDTW \textcite{zhao2018rest} also derived a rule.
+From this and the properties of MaxDTW, \textcite{zhao2018rest} also derived a rule.
 
 \begin{quote}
     \label{lemma}
@@ -65,11 +65,12 @@ We have implemented this conceptually the same way as REST, but with some prunin
 With regards to selecting an MRT when multiple are available, this was done arbitrarily. From the definition, an MRT has a dtw distance to the subtrajectory being compressed lower than the spatial deviation threshold. This means one reference trajectory can have a lower dtw distance than another, while both are considered MRTs. From this one could argue that the algorithm should select the MRT with the lowest distance. However, this implementation of REST applies bounded lossy compression, which means any result within the threshold is valid or "good enough". Therefore no resources are spent locating the best MRT within the threshold, eventhough the resources required aren't large because the dtw distance is calculated anyway. If this were implemented, it could be considered "best effort bounded lossy compression". Comparing that to bounded lossy compression would be interesting, but it was not done due to time constrains. It is also likely that it wouldn't make a large difference because a reference trajectory with a significantly lower dtw distance could also match for a longer subtrajectory. This means that if there were multiple MRTs to select, they are likely close in dtw distance to the relevant subtrajectory. The way the reference trajectories expand and how this effects the dtw distance is further discussed in results and discussion. %DISCUSSION REFERENCE
 
 \subsection{Spatial Filter}
-The implementation of the spatial filter affects the input parameter \break \textit{candidate\_reference\_trajectories} for code listing \ref{lst:ca_expand}. With no spatial filter this input is simply all trajectories in the reference set. However, with a spatial filter this searches through the rtree and selects only those trajectories in the reference set that has t[0] within an envelope of the trajectory being compressed. More on the envelope method in theory about rtree.
+The implementation of the spatial filter influences the input parameter \break \textit{candidate\_reference\_trajectories} for code listing \ref{lst:ca_expand}. With no spatial filter this input is simply all trajectories in the reference set. However, with a spatial filter the rtree selects only the trajectories close to the compressed one. It does this with a range query for latitude and longitude. The point itself is in the center of the range. This can be viewed as creating a box around the first point and selecting all points within the box. The box in our implementation is a square with the length of the sides as an input parameter. A larger square means more points are considered, which might lead to longer runtimes. While a smaller square will have less area coverage, but a faster runtime. More details on balancing coverage and performance can be found in the Results/Discussion section. %Reference results
 
-- this is used by range search
-- after set buld we should use a packed r-tree (with hilbert r-tree) this was not done due to lack of time and rust-eco system lacks.
-- This leads to much fewer points being searched more in discussion
+Note that all points of the reference trajectories are indexed in the R-tree, as shown in \hyperref[lst:ca_sf]{Code Listing \ref{lst:ca_sf}} line 9-11. For reference trajectory $rt = [rt_0, ..., rt_m, ..., rt_n]$, where $rt_m$ is within the range query, $rt_{m,n} = [rt_m, ..., rt_n]$ can be considered as an MRT. As the reference set grows, using the R-tree becomes increasingly faster compared to checking the entire reference set, since more points are pruned.
+
+After the reference set is built from a sample of all trajectories, it should be packed. This is because the data will not change and can be considered static. The Packed Hilbert R-tree would likely perform well in this case since it is simple and efficient with for low dimensionality. Additionally it has a very high storage utilization, which is beneficial if the size of the reference set is a concern. However, due to time constraints, this was not implemented. Nonetheless, the authors recommend exploring this as future work.
+
 \subsection{DTW}
 Each trajectory comparison in the compression has trajectory distance measure as its basis. This was dynamic time warping in \cite{zhao2018rest} and in our implementation. The theory of dtw is covered in 2.4, here we will discuss the implementation of unconstrained dtw aswell as dtw with sakoe-chiba band.
 
