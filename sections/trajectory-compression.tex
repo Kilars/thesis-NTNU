@@ -88,6 +88,18 @@ From equation \ref{eq:dtw} we see that the distance $d_{i, j}$ is dependent on t
     \label{dtw_distance}
 \end{table}
 
+\subsubsection{Max Dynamic Time Warping}
+This is a variant of Dynamic Time Warping which changes the distance equation by taking the max of the distance and the former minimum instead of taking the sum. The new equation is \begin{equation}
+    \label{eq:max_dtw}
+    \begin{aligned}
+        d_{i, j} & = max(distance(A_{i}, B_{j}), \min \left\{ \begin{aligned}
+                                                                   & d_{i-1, j-1} \\
+                                                                   & d_{i-1, j}   \\
+                                                                   & d_{i, j-1}
+                                                              \end{aligned} \right\})
+    \end{aligned}
+\end{equation}
+Following the previous example, $d_{2, 2} = max(distance(A_{2}, B_{2}), 1)$
 
 
 

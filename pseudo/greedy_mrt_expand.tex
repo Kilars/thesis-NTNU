@@ -9,14 +9,13 @@
         candidate_reference_trajectories: &[&'a [Point]],
         st: &[Point],
         spatial_deviation: f64,
-        band: usize,
     ) -> Option<(usize, &'a [Point])> {
         let mut length_match_map = HashMap::new();
         for rt in candidate_reference_trajectories {
             let mut current_rt_matches: HashSet<(usize, usize)> = (0..rt.len() - 1)
                 .into_iter()
                 .filter(|&j|
-                    dtw(&st[0..=1], &rt[j..=j + 1], band) < spatial_deviation
+                    dtw(&st[0..=1], &rt[j..=j + 1]) < spatial_deviation
                 )
                 .map(|j| (j, j + 1))
                 .collect();
@@ -45,7 +44,7 @@
                         ]
                         .into_iter()
                         .filter(|&(s, e)| {
-                            dtw(&st[..=matched_st_len], &rt[s..=e], band) 
+                            dtw(&st[..=matched_st_len], &rt[s..=e]) 
                             < spatial_deviation
                         })
                     })

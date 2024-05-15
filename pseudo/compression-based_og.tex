@@ -2,17 +2,19 @@
     \begin{lstlisting}[
         caption={Psuedo code for reference set construction},
         language=Pascal,
-        label=lst:ca_og
+        label=lst:ca_og,
+        numbers=left
     ]
         Input: T, rs
         Output: ReferenceSet
+        ----------------------------------------
+
         ReferenceSet = []
-        SampleTrajectorySet = AllTrajectories.take(10%)
 
         for ST in SampleTrajectorySet
             CR = Compress(ST, ReferenceSet)
             if CR < 5 
-                ReferenceSet.add(ST)
+                ReferenceSet.push(ST)
 
         ReferenceSet
     \end{lstlisting}

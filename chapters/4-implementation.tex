@@ -1,0 +1,80 @@
+\chapter{Implementation}
+\label{chap:impl}
+In this chapter we will go through how the original version of REST as well as our variants were implemented. Without access to the source code we had to make assumptions for parts of the algorithm, in addition some smaller parts were changed from the original. The code for this algorithm was written in rust and the source code is available on "github.com". The chapter is divided into two sections, detailing the two different parts of the algorithm namely, reference set construction and the compression algorithm.
+
+\section{Reference Set Construction}
+\subsection{Original REST implementation}
+For the reference set constructino we implement the strategy CA-5, which stands for compression based approach with 5 as a compression ratio thresold. This method uses the attempts uses the compression ratio of of trajectories new to the set to determine wether they are redundant to the set. If a trajectory is compressed with a ratio larger than the threshold it is considered redundant, i.e. the set already covers the trajectories to a sufficient degree. CA-5 begins with an empty reference set and then iterates over a subset of all trajectories. For each iteration it determines wether the trajectory is redundant or not. Non redundant trajectories are added to the reference set, for redundant trajectories nothing is done and the iterations simply continue. See code listing \ref{lst:ca_og} for the pseudo code of reference set construction.
+
+\input{pseudo/compression-based_og.tex}
+
+The reference set grows as trajectories from the subset are added, it will have high coverage for the trajectories in the subset, because each trajectory is either in the set or can be represented by the set. The coverage for all trajectories depends on the size of the input subset. %More on size? And maybe another RQ
+
+The authors of REST used a hashset as the datastructure for the reference trajectories, we chose to use an array instead because the uniqueness of the trajectories in the reference set is not a concern. Trajectories will only be added if they are non-redundant for the current reference set, therefore there is no need to check uniqueness using a hashset. We therefore used an array because it has much cheaper insertions.
+\input{pseudo/compression-based_sf.tex}
+One nuance of the algorithm which should be discussed is that the entire trajectory is added to the reference set. A trajectory as a whole can be determined non-redundant, even if some subtrajectories are redundant. The algorithm could then add only the non-redundant parts of the trajectory. This would not be an expensive process as the trajectory has already been compressed and divided into references and points. However, from our interpretation of \cite{zhao2018rest} section 3.3 the trajectory in its entirety is added to the reference set. Therefore we decided to add the the entire trajectory to the set to stay close to the original version of REST.
+
+\subsection{Spatial Filter Variant}
+
+The compression algorithm uses the reference set as a basis for compressing new trajectories. Searching through the entire set for each compression to find candidates to use as references is highly inefficient. Therefore we implement a spatial filter so that the compression algorithm only consideres reference trajectories that are close to the trajectory currently being compressed. The spatial filter is an R-tree containing each point of each trajectory in the reference set. A leaf node in the R-tree contains the position of the point and a tuple index \textit{(i, j)}, \textit{i} is the index of the point's parent trajectory and \textit{j} is the index to the point itself. The psuedo code for reference set construction with a spatial filter is shown in code listing \ref{lst:ca_sf}
+
+\section{Compression Algorithm}
+\subsection{Greedy Spatial Compression}
+For the compression algorithm we implemented Greedy Spatial Compression \break (GSC) from REST. This is an algorithm that searches greedily for the best result. It consists of two parts: a greedy match search and a wrapper connecting compression sequences of subtrajectories.
+The matches are called Matchable Reference Trajectories and the definition is taken directly from \textcite{zhao2018rest}.
+\begin{quote}
+    Definition of Matchable Reference Trajectory (MRT). \textit{Given a sub-trajectory T(i,j) and a spatial deviation threshold $\epsilon_{s}$, its matchable reference trajectory set, denoted as M(T(i,j)), includes all the reference sub-trajectories with less-than-$\epsilon_{s}$ MaxDTW distance with T(i,j), i.e.,}
+    \begin{align*}
+        \hspace*{-3cm} M(T(i,j)) = \{ & \mathbb{T}(k,g) \mid \mathbb{T} \in \mathcal{R}, i \leq k \leq g \leq \left\lvert \mathbb{T} \right\rvert, \\
+        \hspace*{-3cm}                & \text{MaxDTW}(T(i,j), \mathbb{T}(k,g)) \leq \epsilon_{s} \}
+    \end{align*}
+\end{quote}
+From this and the properties of MaxDTW, \textcite{zhao2018rest} also derived a rule.
+
+\begin{quote}
+    \label{lemma}
+    Lemma 1. \textit{Any sub-trajectory of the MRT of T(i,j) is also an MRT of sub-trajectory of T(i,j).}
+\end{quote}
+
+With the definition of an MRT and Lemma 1 out of the way, the GSC algorithm can be explained.
+For a trajectory \textit{T} = [$t_0$, ..., $t_n$] it searches for an MRT for the longest possible subtrajectory starting in $t_0$. If no \acrshort{mrt} is found then it adds [$t_0$, $t_1$] uncompressed to the compression sequence. Then it begins a new search starting in $t_1$. If an \acrshort{mrt} $r_{1,m}$ matches [$t_1$, ..., $t_m$], the \acrshort{mrt} is added to the compression sequence. The compression sequence for [$t_0$, ..., $t_m$] would be [$t_0$, $t_1$, $r_{1,m}$]. This process continues until a compression sequence for [$t_0$, ..., $t_n$] is calculated. The pseudo code for \textit{mrt\_search} is written in algorthm 1 of \textcite{zhao2018rest}. The Rust code of our version \textit{greedy\_mrt\_search} can be found in code listing \ref{lst:ca_expand}. The function's input and output is shown in line 1-6, it has 4 input parameters:
+
+\input{pseudo/greedy_mrt_expand.tex}
+
+\begin{itemize}
+    \item{\textit{t} - The trajectory being compressed}
+    \item{\textit{candidate\_reference\_trajectories} - The reference trajectories used in compression}
+    \item{\textit{spatial\_devation} - The spatial devation threshold for MRTs}
+\end{itemize}
+
+The output is a tuple (\textit{m}, $r_{0,m}$) or None. \textit{m} is the last index of the subtrajectory corresponding to the MRT. $r_{0,m}$ is the MRT itself. The compressed subtrajectory is given by \textit{t} and \textit{m} as [$t_0$, ..., $t_m$], the first index is always 0 because of the greedy search strategy. The compressed subtrajectory is the longest subtrajectory with an MRT from \textit{candidate\_reference\_trajectories}. None is returned if no MRTs were found.
+
+Line 7 in code listing \ref{lst:ca_expand} is the start of the function and intializes a map for subtrajectory - MRT pairs (same structure as the output of the function). Line 8-47 is the code block for search in each reference trajectory \textit{rt}. It initializes \textit{current\_mrts} with all length two MRTs for [$t_0$, ..., $t_i$] where $i = 1$ (line 9-15). It does this by calculating the dtw distance between [$t_0$, $t_1$] and subtrajectories [$rt_j$, $rt_{j+1}$] for $j = 0, 1, ..., m-2$, where $m$ is the length of the $rt$. $current\_mrts$ is the collecttion of all subtrajectories with dtw distance lower than the $spatial\_deviation$. It follows from \hyperref[lemma]{Lemma 1} that this will be the basis for all MRTs. This is because DTW can never decrease the cost to a point later in the matrix.
+
+The loop in line 17-47 uses $current\_mrts$ to find MRTs for $st_{i+1}$ = [$t_0$, ..., $t_{i+1}$] and stores MRTs to the global set (line 20-26). For each $rt$ = [$rt_0$, ..., $rt_m$] in $current\_mrts$ (matches for $st_i$), three expansions are tested for a match with $st_{i+1}$:
+\begin{itemize}
+    \item {[$rt_0$, ..., $rt_m$]}
+    \item {[$rt_m$, ..., $rt_{m+1}$]}
+    \item {[$rt_0$, ..., $rt_{m+1}$]}
+\end{itemize}
+This is in accordance with the expansion in the REST mrt\_search algorithm. This loop continues, increasing $i$ for each iteration, as long as an MRT can be found for $st_{i+1}$ or until $i+1 = |st|$. In addition an arbitrary match from the $current\_mrts$ is added to the global map if no entry exists for $st_{i}$, for each iteration. When this loop finishes, the algorithm reapeats the process for another reference trajectory. In the end, on line 50 the (ST, MRT) tuple for the longes ST from the global map is returend.
+
+We have implemented this conceptually the same way as REST, but with some pruning and practical programming considerations. For example in our version all searching for one reference trajectory is completed the first time it is loaded to memory. This is opposed to the pseudo code of the REST algorithm which checks for MRT expansions in an arbitrary manner. In addition in the initialization process which checks all length two subtrajectories from T and RT for match is changed. Our version checks all length two subtrajectories from RT with the length two subtrajectory [$t_0$, $t_1$], because this is a greedy algorithm which begins in T[0]. While the version in REST finds all MRTs for $[t_i, t_{i+1}] \in T$. This difference is due to their version working for both greedy and optimal strategies. This simplification could only be made by specializing the function to only support a greedy search.
+
+With regards to selecting an MRT when multiple are available, this was done arbitrarily. From the definition, an MRT has a dtw distance to the subtrajectory being compressed lower than the spatial deviation threshold. This means one reference trajectory can have a lower dtw distance than another, while both are considered MRTs. From this one could argue that the algorithm should select the MRT with the lowest distance. However, this implementation of REST applies bounded lossy compression, which means any result within the threshold is valid or "good enough". Therefore no resources are spent locating the best MRT within the threshold, eventhough the resources required aren't large because the dtw distance is calculated anyway. If this were implemented, it could be considered "best effort bounded lossy compression". Comparing that to bounded lossy compression would be interesting, but it was not done due to time constrains. It is also likely that it wouldn't make a large difference because a reference trajectory with a significantly lower dtw distance could also match for a longer subtrajectory. This means that if there were multiple MRTs to select, they are likely close in dtw distance to the relevant subtrajectory. The way the reference trajectories expand and how this effects the dtw distance is further discussed in results and discussion. %DISCUSSION REFERENCE
+
+\subsection{Spatial Filter}
+The implementation of the spatial filter influences the input parameter \break \textit{candidate\_reference\_trajectories} for code listing \ref{lst:ca_expand}. With no spatial filter this input is simply all trajectories in the reference set. However, with a spatial filter the rtree selects only the trajectories close to the compressed one. It does this with a range query for latitude and longitude. The point itself is in the center of the range. This can be viewed as creating a box around the first point and selecting all points within the box. The box in our implementation is a square with the length of the sides as an input parameter. A larger square means more points are considered, which might lead to longer runtimes. While a smaller square will have less area coverage, but a faster runtime. More details on balancing coverage and performance can be found in the Results/Discussion section. %Reference results
+
+Note that all points of the reference trajectories are indexed in the R-tree, as shown in \hyperref[lst:ca_sf]{Code Listing \ref{lst:ca_sf}} line 10-12. For reference trajectory $rt = [rt_0, ..., rt_m, ..., rt_n]$, where $rt_m$ is within the range query, $rt_{m,n} = [rt_m, ..., rt_n]$ can be considered as an MRT. As the reference set grows, using the R-tree becomes increasingly faster compared to checking the entire reference set, since more points are pruned.
+
+After the reference set is built from a sample of all trajectories, it should be packed. This is because the data will not change and can be considered static. The Packed Hilbert R-tree would likely perform well in this case since it is simple and efficient with for low dimensionality. Additionally it has a very high storage utilization, which is beneficial if the size of the reference set is a concern. However, due to time constraints, this was not implemented. Nonetheless, the authors recommend exploring this as future work.
+
+\subsection{Distance Measure}
+Both DTW and MaxDTW have been implemented in order to test the differences. Discuss:
+\begin{itemize}
+    \item Normal DTW is highly dependent on length of the trajectory which makes it impossible to choose a threshold that fits the whole dataset
+    \item Therefore max dtw was chosen as this is normalized for length (avgDTW could also be used)
+    \item Maxdtw can underestimate the actual distance for trajectories
+    \item Interesting to consider other distance measures and DTW approximation.
+\end{itemize}

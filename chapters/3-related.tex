@@ -1,0 +1,9 @@
+\chapter{Related Work}
+\label{chap:rel}
+There is not much related work in this field, other than the original authors of REST expanding the original version with a Hybrid Index structure in order to query compressed trajectories. \textcite{zheng2019reference} suggest an IR-Tree as a Hybrid Index structure. An IR-tree is an R-tree based structure which provides document search and ranking for geodata \cite{li2010ir}. The following three features are a key part of the search: spatial filtering, textual filtering, and ranking. The filtering seeks to prune irrelevant nodes as early as possible, while the ranking attempts to provide the most relevant nodes first. The tree clusters nodes by their spatial data with textual data is stored as metadata.
+
+This structure was efficient since the reference set is very small relative to the entire data set. Therefore the IR-tree was also small and can easily live in memory. The query processing showed promising results, outperforming state of the art methods.
+
+Our work in this thesis differs from this in that the R-tree in our implementation is made before compression. It is created to speed up the building of the reference set and the compression afterwards. However, with some additions, it can likely be used in a similar manner for querying after compression.
+
+Kommentar: Kan utvide litt her mer her, men det er altså ikke veldig mye å ta i for related work.

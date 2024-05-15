@@ -14,15 +14,12 @@ In addition reference based compression provides another key advantage, namely b
 
 \section{Research Questions}
 %claim
-In this paper we will implement a version of REST for spatial-only compression with two adjustments aimed at reducing the most intensive process in the algorithm, namely the trajectory distance measure. The first change reduces the amount of distance measures required by using a spatial filter. The second change is reducing the runtime complexity of the algorithm for trajectory distance by using an approximate value. We believe this can improve the runtime of REST and make it usefull in a big data setting.
-
-In this paper we will compare the results from REST as propsed in \cite{zhao2018rest} and our version. As well as comparing REST to other state-of-the-art trajectroy compression methods in order to support or refute the results from \cite{zhao2018rest}. From this we derive the following research questions:
+In this paper we will implement a version of REST for spatial-only compression with a spatial index. This is aimed at decreasing the runtime even as the reference set grows large while maintaing a good compression ratio. Additionally, we will explore the ratio between reference set size and the sample size. If the reference set size converges as the sample size grows, this indicates that REST and other reference based methods can achieve high compression. As well as comparing our implementation of the original REST to our spatial index variant. From this we derive the following research questions:
 
 \begin{description}
-    \item[RQ1] Does the suggested spatial filter improve the runtime of the original REST algorithm?
-    \item[RQ2] Does the suggested approximation of the distance measure improve the runtime of the original REST algorithm without significantly worsening the precision?
+    \item[RQ1] Does the reference set size converge as the sample size grows?
+    \item[RQ2] Can the spatial index significantly improve runtime while maintaining a similar compression ratio?
     \item[RQ3] Does our implementation of the original REST outperform state of the art methods in terms of compression ratio and runtime?
-    \item[RQ4] Does our implementation of the improved REST outperform state of the art methods in terms of compression ratio and runtime?
 \end{description}
 
 \section{Outline}
@@ -30,8 +27,13 @@ This thesis is a continuation of a project from the course \textit{TDT4151 - Com
 
 Firstly \textbf{Chapter 2} is mostly based on the former report and summarizes relevant theory.
 \newline
+\textbf{\hyperref[chap:impl]{Chapter~\ref*{chap:rel}}} goes through work similar to that of this thesis.
+\newline
 \textbf{\hyperref[chap:impl]{Chapter~\ref*{chap:impl}}} explains the specific implementation details of the REST algorithm. As well as a rundown of the different variants made.
+\newline
+\textbf{\hyperref[chap:impl]{Chapter~\ref*{chap:res}}} presents the results of the experiments conducted and discusses them in relation to the research questions.
 
-For the source code for the algorithm and experiment setup see: github.com. To see the contribution made to the open-source rust library see:
+For the source code for the algorithm and experiment setup see: https://github.com/Kilars/master-code.
+% To see the contribution made to the open-source rust library see:
 % https://github.com/shshemi/dtw-rs/pull/1/files#diff-344ba2b71ffb93beac576f22ee219b4247385dd9b91f5f0b33ab583aab016427
 

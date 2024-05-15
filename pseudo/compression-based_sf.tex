@@ -2,12 +2,13 @@
     \begin{lstlisting}[
         caption={Psuedo code for reference set construction with spatial filter},
         language=Pascal,
-        label=lst:ca_sf
+        label=lst:ca_sf,
+        numbers=left
     ]
         Input: T, rs
         Output: ReferenceSet
+        ----------------------------------------
         ReferenceSet = []
-        SampleTrajectorySet = AllTrajectories.take(10%)
         RTree = new RTree()
 
         for ST in SampleTrajectorySet
@@ -16,7 +17,7 @@
                 i = ReferenceSet.len()
                 for (pt, j) in ST
                     RTree.insert(pt, (i, j))
-                ReferenceSet.add(ST)
+                ReferenceSet.push(ST)
 
         (ReferenceSet, RTree)
     \end{lstlisting}
