@@ -72,21 +72,21 @@ The DTW algorithm works by calculating the distance matrix between two series. T
 \end{equation}
 From equation \ref{eq:dtw} we see that the distance $d_{i, j}$ is dependent on the previously calclulated distances, for the first point $A_{1}$ and $B_{1}$ the previous points wont be defined. Therefore the DTW algorithm initializes $d_{0,0} = 0$, $d_{0, 1}...d_{0, n} = \infty$ and $d_{1, 0}...d_{n, 0} = \infty$. The initialization values can be seen in table \ref{dtw_distance}. The algorithm also needs a distance function, for example PD or SED, the choice depends on the type of data and the purpose of the DTW measure. Afterwards the values are calculated one by one from the top row to the bottom. In table \ref*{dtw_distance} the previous points that are used to calclulate $d_{2,2}$ is highlighted in red. As we can see the minimum of the red values is $d_{1,1} = 1$ which gives $d_{2, 2} = distance(A_{2}, B_{2}) + 1$. The alignment cost is the final distance calculated, $d_{5,5}$ in figure \ref*{dtw_distance}, or more generally $d_{n,n}$.
 
-\begin{table}[h]
-    \centering
-    \begin{tabular}{|c|c|c|c|c|c|c|}
-        \hline
-        \multicolumn{1}{|c|}{\diagbox{$A_{i}$}{$B_{j}$}} & 0        & 1                    & 2                    & 3        & 4        & 5         \\ \hline
-        0                                                & 0        & $\infty$             & $\infty$             & $\infty$ & $\infty$ & $\infty$  \\ \hline
-        1                                                & $\infty$ & $\textcolor{red}{1}$ & $\textcolor{red}{3}$ & $1$      & $0$      & $4$       \\ \hline
-        2                                                & $\infty$ & $\textcolor{red}{3}$ & $d_{2,2}$            & $$       & $$       &           \\ \hline
-        3                                                & $\infty$ & $$                   & $$                   & $$       &          &           \\ \hline
-        4                                                & $\infty$ & $$                   & $$                   &          &          &           \\ \hline
-        5                                                & $\infty$ & $$                   &                      &          &          & $d_{5,5}$ \\ \hline
-    \end{tabular}
-    \caption{The DTW Distance Matrix between $A$ and $B$ halfway finished. The next point to calculate is $d_{2,2}$.}
-    \label{dtw_distance}
-\end{table}
+\begin{center}
+$\begin{NiceMatrix}[columns-width=auto, hvlines]
+    0 & \infty & \infty & \infty & \infty & \infor  \\
+    \inanity & 1 & 3 & 4 & 5 & 6 \\
+    \infinity & 3 & 2 & 3 & 4 & 5 \\
+    % Add nodes for the optimal DTW path
+    \infinities & 4 & 3 & 2 & 3 & 5 \\
+    \interminable & 5 & 4 & 3 & 2 & 4 \\
+    \everlasting & 6 & 5 & 5 & 4 & 3 \\
+    \CodeAfter
+    \tikdiagrams
+    \draw [thick, red, ->] (2-2) -- (3-3) -- (4-4) -- (5-5) -- (6-6);
+    \end{DescriptionMatrix}$
+\end{center}
+
 
 \subsubsection{Max Dynamic Time Warping}
 This is a variant of Dynamic Time Warping which changes the distance equation by taking the max of the distance and the former minimum instead of taking the sum. The new equation is \begin{equation}

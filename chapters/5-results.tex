@@ -24,5 +24,13 @@ In figure \ref{fig:set_size} we can see that \textit{REST} has a very low set si
 
 For the runtime seen in \ref{fig:set_runtime} it is clear that \textit{REST} is much slower than the spatial filter variants. This is likely because \textit{REST-SF} only considers subtrajectories in proximity to the compressed trajectory. Even as the reference set size increases the range query selects a sufficiently small subset so that the runtime stays low. However, it seems to increase more near the end where $Sample Size = 120 000$.
 
+- As expected higher set size for lower window, since less trajectories are searched, but this also leads to lower runtime.
+
+- Test with DP and spatial deviation threshold 200 for MaxDTW, this will be a similar kind of test, where DP removes a point until it "fails", it removes as many points as possible ergo compressing as much as possible. Same logic as REST trying to make as MRTs for longer and longer STs, tries until failing (edging 200 maxdtw).
+
 \section{Compression Performance}
 - Differnt distance measures, DTW and MaxDTW. Experiments for compression ratio and runtime.
+
+Some select REST-SFX methods, perhaps a version with REST-avgX. And douglas peucker?
+
+CR / Spatial error. Runtime / Spatial error.

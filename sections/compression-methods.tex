@@ -8,7 +8,7 @@
 \section{Douglas-Peucker}
 \textcite{dp} introduced the Douglas-Peucker (DP) line simplifcation algorithm. It is a Top-Down algorithm, which means it recursively partitions the line until some halting condition is met, from \cite{Sun2016}. DP begins by removing all points except for the end points, then it adds the point furthest from the line back into the graph. As this happens the line is updated to go through the newly added point. This process continues recursively by adding the point farthest from the line and updating the line until no point is further away than a certain threshold. See an example iteration of DP in figure \ref{dp}. The halting condition is met when no point is a further than the distance $d$ from the line.
 
-DP has a worst case runtime of $O(n^{2})$. However \cite{gudmundsson2009compressing}, created an improved version which can run in $O(n\log(n))$ even in if the path is polygon and self intersects. There are also other implementations of DP that use spatiotemporal distance measures like SED.
+DP has a worst case runtime of $O(n^{2})$, but is used for its simplicity and efficiency in practice \cite{gudmundsson2009compressing}. Addiotionally \textcite{gudmundsson2009compressing}, created an improved version which can run in $O(n\log(n))$ even in if the path is polygonal and self intersects. There are also other implementations of DP that use spatiotemporal distance measures like SED.
 \begin{figure}[h]
     \includegraphics[width=1.0\linewidth]{./figures/dp.png}
     \caption{Three iteration of the Douglas Peucker algorithm, where the halting condition is met in the third iteration.}
