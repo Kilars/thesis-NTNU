@@ -57,9 +57,9 @@ The Heading Error (HE) for a point $p_{i}$ is the angular difference between the
 The Speed Error is similar to the Heading Error in that it compares the segments from the original trajectory with the corresponding segment in the compressed trajectory. However, it compares speed instead of direction. The Speed Error is the difference in speed between the original and compressed trajectory at a given point.
 
 \subsubsection{Dynamic Time Warping}
-Dynamic Time Warping (DTW) is an algorithm used to determine the alignment cost between two time series. It can align the series by finding which points correspond to each other and the distortion between corresponding points. The total alignment cost describes how similar the series are according to the DTW measure. When trying to align two very different series, the alignment cost will be high, for two similar series, it will be low. With regards to trajectory compression, the alignment cost between a compressed trajectory and the original describes how similar they are, or how much information is preserved in compressed form. A compression with high fidelity will have a low alignment cost.
+Dynamic Time Warping (DTW) is an algorithm used to determine the alignment cost between two temporal series. It can align the series by finding which points correspond to each other and the distortion between them. The total alignment cost describes how similar the series are according to the DTW measure. When trying to align two very different series, the alignment cost will be high, for two similar series, it will be low. With regards to trajectory compression, the alignment cost between a compressed trajectory and the original describes how similar they are, or how much information is preserved in compressed form. A compression with high fidelity will have a low alignment cost.
 
-The DTW algorithm works by calculating the distance matrix between two series. The distance $d_{i,j}$ in a matrix $D$ between the series $A$ and $B$ is given by:
+The DTW algorithm works by calculating the distance matrix between two series. The distance $d_{i,j}$ in a matrix $D$ between the series $A$ and $B$ where \textit{distance} is a distance function between points, is given by:
 \begin{equation}
     \label{eq:dtw}
     \begin{aligned}
@@ -70,29 +70,32 @@ The DTW algorithm works by calculating the distance matrix between two series. T
                                                            \end{aligned} \right\}
     \end{aligned}
 \end{equation}
-From equation \ref{eq:dtw} we see that the distance $d_{i, j}$ is dependent on the previously calclulated distances, for the first point $A_{1}$ and $B_{1}$ the previous points wont be defined. Therefore the DTW algorithm initializes $d_{0,0} = 0$, $d_{0, 1}...d_{0, n} = \infty$ and $d_{1, 0}...d_{n, 0} = \infty$. The initialization values can be seen in table \ref{dtw_distance}. The algorithm also needs a distance function, for example PD or SED, the choice depends on the type of data and the purpose of the DTW measure. Afterwards the values are calculated one by one from the top row to the bottom. In table \ref*{dtw_distance} the previous points that are used to calclulate $d_{2,2}$ is highlighted in red. As we can see the minimum of the red values is $d_{1,1} = 1$ which gives $d_{2, 2} = distance(A_{2}, B_{2}) + 1$. The alignment cost is the final distance calculated, $d_{5,5}$ in figure \ref*{dtw_distance}, or more generally $d_{n,n}$.
+From equation \ref{eq:dtw} we see that the distance $d_{i, j}$ depends on the distances of previous points, for the first point $A_{1}$ and $B_{1}$ the previous points wont be defined. Therefore the DTW algorithm adds a padding row and column: $d_{0,0} = 0$, $d_{0, 1}...d_{0, n} = \infty$ and $d_{1, 0}...d_{n, 0} = \infty$ this can be seen in figure \ref{fig:dtw}. The distance function, for example Euclidean Distance or SED, the choice depends on the type of data and the purpose of the DTW measure. Afterwards the values are calculated one by one from the top row from left to right. Figure \ref{fig:dtw} shows an example of a DTW distance matrix for vectors \textit{A} and \textit{B}. The figure also shows the "optimal alignment path" or "optimal path" of \textit{A} and \textit{B}. The path intersects matrix cells representing alignment between points in \textit{A} and \textit{B}. The alignment cost is the final distance calculated, $d_{5,5}$ in figure \ref{fig:dtw}, or more generally $d_{n,n}$.
 
-\begin{table}[h]
+\begin{figure}
     \centering
     \begin{tabular}{|c|c|c|c|c|c|c|}
         \hline
-        \multicolumn{1}{|c|}{\diagbox{$A_{i}$}{$B_{j}$}} & 0                  & 1        & 2                & 3                  & 4        & 5                  \\ \hline
-        0                                                & 0\tikzmark{start1} & $\infty$ & $\infty$         & $\infty$           & $\infty$ & $\infty$           \\ \hline
-        1                                                & $\infty$           & 1        & 3                & $6$                & $2$      & $4$                \\ \hline
-        2                                                & $\infty$           & 7        & 3\tikzmark{end1} & $4$\tikzmark{end2} & $5$      & $3$                \\ \hline
-        3                                                & $\infty$           & 9        & 5                & $8$                & $5$      & $6$                \\ \hline
+        \multicolumn{1}{|c|}{\diagbox{$A_{i}$}{$B_{j}$}} &                    & 9        & 5                & 2                  & 6        & 4                  \\ \hline
+                                                         & 0\tikzmark{start1} & $\infty$ & $\infty$         & $\infty$           & $\infty$ & $\infty$           \\ \hline
+        8                                                & $\infty$           & 1        & 3                & $6$                & $2$      & $4$                \\ \hline
+        3                                                & $\infty$           & 7        & 3\tikzmark{end1} & $4$\tikzmark{end2} & $5$      & $3$                \\ \hline
+        7                                                & $\infty$           & 9        & 5                & $8$                & $5$      & $6$                \\ \hline
         4                                                & $\infty$           & 14       & 6                & $7$                & $7$      & $5$\tikzmark{end3} \\ \hline
-        5                                                & $\infty$           & 20       & 8                & $7$                & $10$     & $6$\tikzmark{end4} \\ \hline
+        3                                                & $\infty$           & 20       & 8                & $7$                & $10$     & $6$\tikzmark{end4} \\ \hline
     \end{tabular}
     \begin{tikzpicture}[overlay, remember picture]
-        \draw[thick, red, -] ($(pic cs:start1) + (-0.55,0.35)$) -- ($(pic cs:end1) + (-0.1,0.1)$);
-        \draw[thick, red, -] ($(pic cs:end1) + (-0.1,0.1)$) -- ($(pic cs:end2) + (-0.1,0.1)$);
-        \draw[thick, red, -] ($(pic cs:end2) + (-0.1,0.1)$) -- ($(pic cs:end3) + (-0.1,0.1)$);
-        \draw[thick, red, -] ($(pic cs:end3) + (-0.1,0.1)$) -- ($(pic cs:end4) + (-0.1,0.1)$);
+        \draw[thick, blue, -, opacity=0.7] ($(pic cs:start1) + (-0.1,0.1)$) -- ($(pic cs:end1) + (-0.1,0.1)$);
+        \draw[thick, blue, -, opacity=0.7] ($(pic cs:end1) + (-0.1,0.1)$) -- ($(pic cs:end2) + (-0.1,0.1)$);
+        \draw[thick, blue, -, opacity=0.7] ($(pic cs:end2) + (-0.1,0.1)$) -- ($(pic cs:end3) + (-0.1,0.1)$);
+        \draw[thick, blue, -, opacity=0.7] ($(pic cs:end3) + (-0.1,0.1)$) -- ($(pic cs:end4) + (-0.1,0.1)$);
     \end{tikzpicture}
-    \caption{The DTW Distance Matrix between $A$ and $B$ halfway finished. The next point to calculate is $d_{2,2}$.}
-    \label{dtw_distance}
-\end{table}
+    \caption{The DTW Distance Matrix $M$ between vectors $A = [8, 3, 7, 4, 3]$ and $B = [9, 5, 2, 6, 4]$. The distance function for these one dimentional points is simply the absolute value of the difference. The blue line shows the optimal path between the vectors. The optimal alignment from $A$ to $B$ is $[8\rightarrow9, 3\rightarrow(5, 2), 7\rightarrow6, 4\rightarrow4, 3\rightarrow4]$. The alignment cost (or DTW distance) is the value in the last matrix cell, in this case $M_{5,5} = 6$.
+    }
+    \label{fig:dtw}
+\end{figure}
+
+One potential drawback of DTW is the fact that it is not normalized. For longer vectors, the distance will likely be higher than for shorter vectors. This is because the final alignment cost represents the alignment cost for all previous points, hence more points will lead to a higher final alignment cost. This can be troublesome when comparing different DTW distances since there is no information regarding the length of the vector. One should accept a higher cost for a longer
 
 
 
