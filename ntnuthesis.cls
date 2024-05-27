@@ -154,6 +154,7 @@
 \RequirePackage{graphicx}                   % including figures
 \RequirePackage{amsmath}                    % advanced math typesetting
 \RequirePackage{tikz}                       % draw lines in figures
+\usetikzlibrary{tikzmark, calc}
 \RequirePackage{nicematrix}
 \RequirePackage[                            % subfigures with captions within figures
     font=small,                             % and customisation of captions

@@ -72,20 +72,28 @@ The DTW algorithm works by calculating the distance matrix between two series. T
 \end{equation}
 From equation \ref{eq:dtw} we see that the distance $d_{i, j}$ is dependent on the previously calclulated distances, for the first point $A_{1}$ and $B_{1}$ the previous points wont be defined. Therefore the DTW algorithm initializes $d_{0,0} = 0$, $d_{0, 1}...d_{0, n} = \infty$ and $d_{1, 0}...d_{n, 0} = \infty$. The initialization values can be seen in table \ref{dtw_distance}. The algorithm also needs a distance function, for example PD or SED, the choice depends on the type of data and the purpose of the DTW measure. Afterwards the values are calculated one by one from the top row to the bottom. In table \ref*{dtw_distance} the previous points that are used to calclulate $d_{2,2}$ is highlighted in red. As we can see the minimum of the red values is $d_{1,1} = 1$ which gives $d_{2, 2} = distance(A_{2}, B_{2}) + 1$. The alignment cost is the final distance calculated, $d_{5,5}$ in figure \ref*{dtw_distance}, or more generally $d_{n,n}$.
 
-\begin{center}
-$\begin{NiceMatrix}[columns-width=auto, hvlines]
-    0 & \infty & \infty & \infty & \infty & \infor  \\
-    \inanity & 1 & 3 & 4 & 5 & 6 \\
-    \infinity & 3 & 2 & 3 & 4 & 5 \\
-    % Add nodes for the optimal DTW path
-    \infinities & 4 & 3 & 2 & 3 & 5 \\
-    \interminable & 5 & 4 & 3 & 2 & 4 \\
-    \everlasting & 6 & 5 & 5 & 4 & 3 \\
-    \CodeAfter
-    \tikdiagrams
-    \draw [thick, red, ->] (2-2) -- (3-3) -- (4-4) -- (5-5) -- (6-6);
-    \end{DescriptionMatrix}$
-\end{center}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+        \hline
+        \multicolumn{1}{|c|}{\diagbox{$A_{i}$}{$B_{j}$}} & 0                  & 1        & 2                & 3                  & 4        & 5                  \\ \hline
+        0                                                & 0\tikzmark{start1} & $\infty$ & $\infty$         & $\infty$           & $\infty$ & $\infty$           \\ \hline
+        1                                                & $\infty$           & 1        & 3                & $6$                & $2$      & $4$                \\ \hline
+        2                                                & $\infty$           & 7        & 3\tikzmark{end1} & $4$\tikzmark{end2} & $5$      & $3$                \\ \hline
+        3                                                & $\infty$           & 9        & 5                & $8$                & $5$      & $6$                \\ \hline
+        4                                                & $\infty$           & 14       & 6                & $7$                & $7$      & $5$\tikzmark{end3} \\ \hline
+        5                                                & $\infty$           & 20       & 8                & $7$                & $10$     & $6$\tikzmark{end4} \\ \hline
+    \end{tabular}
+    \begin{tikzpicture}[overlay, remember picture]
+        \draw[thick, red, -] ($(pic cs:start1) + (-0.55,0.35)$) -- ($(pic cs:end1) + (-0.1,0.1)$);
+        \draw[thick, red, -] ($(pic cs:end1) + (-0.1,0.1)$) -- ($(pic cs:end2) + (-0.1,0.1)$);
+        \draw[thick, red, -] ($(pic cs:end2) + (-0.1,0.1)$) -- ($(pic cs:end3) + (-0.1,0.1)$);
+        \draw[thick, red, -] ($(pic cs:end3) + (-0.1,0.1)$) -- ($(pic cs:end4) + (-0.1,0.1)$);
+    \end{tikzpicture}
+    \caption{The DTW Distance Matrix between $A$ and $B$ halfway finished. The next point to calculate is $d_{2,2}$.}
+    \label{dtw_distance}
+\end{table}
+
 
 
 \subsubsection{Max Dynamic Time Warping}
