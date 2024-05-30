@@ -56,10 +56,20 @@ The Heading Error (HE) for a point $p_{i}$ is the angular difference between the
 \subsubsection{Speed Error}
 The Speed Error is similar to the Heading Error in that it compares the segments from the original trajectory with the corresponding segment in the compressed trajectory. However, it compares speed instead of direction. The Speed Error is the difference in speed between the original and compressed trajectory at a given point.
 
-\subsection{Dynamic Time Warping}
-According to \textcite{muller2007dynamic} Dynamic Time Warping (DTW) is an algorithm used to determine the alignment cost between two temporal series. It can align the series by finding corresponding points between the series and finding the optimal alignment. The total alignment cost describes how similar the series are according to the DTW measure. When trying to align two very different series, the alignment cost will be high, for two similar series, it will be low. With regards to trajectory compression, the alignment cost between a compressed trajectory and the original describes how similar they are, or how much information is preserved in compressed form. A compression with high fidelity will have a low alignment cost.
+\subsection{Performance Metrics}
+\subsubsection{Compression Ratio}
+Compression ratio measures the amount of data compressed. This is calculated as $C_{r} = \frac{|o|}{|c|}$, where $C_{r}$ is the compression ratio, $|o|$ is the size of the original data, and $|c|$ is the size of the compressed data. Storing a 10GB file with 5GB gives a compression ratio of $10 / 5 = 2$, meaning it was stored using half the original size. This can also be written as a 2:1 compression ratio.
 
-There are many variations of DTW, that are made to speed up or otherwise improve it. We will begin by explaining "Classical DTW" from \textcite{muller2007dynamic}. This algorithm works by calculating the cost matrix between two series. The cost $d_{i,j}$ in a matrix $D$ between the series $A$ and $B$ where \textit{distance} is a distance function between points, is given by:
+\subsubsection{Compression Performance}
+Compression performance measures the speed of compression as well as the resource usage. Compression speed is simply the time it took to compress measured in seconds. Resource usage, however can be measured in a variety of ways, this depends on what kind of usage you want to measure, for example memory usage or CPU time. Computer executions like these have variance in performance, therefore it is important to measure the average for multiple runs when doing an experiment, both for compression speed and resource usage. Additionally it is important that when comparing compression performance that the measures were gathered in the same environment, meaning the experiment was executed on the same computer with the same version of the program. Otherwise the results are not comparable.
+
+\section{Dynamic Time Warping}
+According to \textcite{muller2007dynamic} Dynamic Time Warping (DTW) is an algorithm used to determine the alignment cost between two temporal series. It can align the series by finding corresponding points between the series and finding the optimal alignment. The total alignment cost describes how similar the series are according to the DTW measure. When trying to align two very different series, the alignment cost will be high, for two similar series, it will be low. With regards to trajectory compression, the alignment cost between a compressed trajectory and the original describes how similar they are, or how much information is preserved in the compressed form. A compression with high fidelity will have a low alignment cost.
+
+There are many variations of DTW, that are made to speed up or otherwise improve it. We will begin by explaining Classical DTW from \textcite{muller2007dynamic}.
+
+\subsection{Classical DTW}
+Classical DTW works by calculating the cost matrix between two series. The cost $d_{i,j}$ in a matrix $D$ between the series $A$ and $B$ where \textit{distance} is a distance function between points, is given by:
 \begin{equation}
     \label{eq:dtw}
     \begin{aligned}
@@ -70,8 +80,26 @@ There are many variations of DTW, that are made to speed up or otherwise improve
                                                            \end{aligned} \right\}
     \end{aligned}
 \end{equation}
-From equation \ref{eq:dtw} we see that the distance $d_{i, j}$ depends on the distances of previous points, for the first point $A_{1}$ and $B_{1}$ the previous points wont be defined. Therefore a padding row and column is added: $d_{0,0} = 0$, $d_{1, 0}...d_{n, 0} = \infty$ and $d_{0, 1}...d_{0, m} = \infty$ this padding can be seen in figure \ref{fig:dtw}. The distance function depends on the type of data and the purpose of the DTW measure, for example Euclidean Distance or SED. The matrix values are calculated one by one from the top row from left to right using the distance function and the previous values. Figure \ref{fig:dtw} shows an example of a DTW cost matrix for vectors \textit{A} and \textit{B}. The figure also shows the "optimal alignment path" or "optimal path" of \textit{A} and \textit{B}. The path intersects matrix cells representing alignment between points in \textit{A} and \textit{B}. The alignment cost is the final distance calculated, $d_{5,5}$ in figure \ref{fig:dtw}, or more generally $d_{n,m}$.
+\textcite{muller2007dynamic} introduces two terms, \textit{cost matrix} and \textit{accumulated cost matrix}. The cost matrix is a matrix of distances between all points in series $A$ and $B$, an example of a cost matrix is shown in figure \ref{fig:dtw_cost}. From the cost matrix, an accumulated cost matrix can be derived, each matrix cell contains the accumulated cost as defined in equation \ref{eq:dtw}. The accumulated cost matrix corresponding to the example in figure \ref{fig:dtw_cost} is shown in figure \ref{fig:dtw_acc_cost}. From equation \ref{eq:dtw} we see that the cost $d_{i, j}$ depends on the cost of previous points, for the first point $A_{1}$ and $B_{1}$ the previous points wont be defined. Therefore a padding row and column is added: $d_{0,0} = 0$, $d_{1, 0}...d_{n, 0} = \infty$ and $d_{0, 1}...d_{0, m} = \infty$, this padding can be seen in figure \ref{fig:dtw_acc_cost}. The distance function depends on the type of data and the purpose of the DTW measure, Euclidean Distance or SED are common choices. The matrix cells are calculated one by one, from the top row, from left to right, using the cost function as described in equation \ref{eq:dtw}. Figure \ref{fig:dtw_acc_cost} shows an example of a DTW cost matrix for vectors $A = [8, 3, 7, 4, 3]$ and $B = [9, 5, 2, 6, 4]$. The total alignment cost is the accumulated cost in the final cell, $d_{5,5}$ in figure \ref{fig:dtw_acc_cost}, or more generally $d_{n,m}$.
 
+Additionally, \textcite{muller2007dynamic} introduces the term \textit{warping path}, which is a sequence of points (matrix cells) in an accumulated cost matrix, that defines alignment between two sequences. If a warping path for $A$ and $B$ in the matrix $M$, includes $M_{1,2}$ this represents aligning point $A_1$ to $B_2$. The \textit{optimal warping path} is the warping path with the lowest total cost among all possible warping paths \cite{muller2007dynamic}. To find the optimal warping path, start from the last cell of the matrix and trace back to the first, selecting the paths with the lowest costs. If there are ties in cost, a predetermined set of priorities for different path directions (diagonal, horizontal, vertical) is used. Consequently, there can be multiple warping paths with the same minimal cost, but only one optimal warping path. Figure \ref{fig:dtw_acc_cost} shows the optimal warping path drawn in the accumulated cost matrix.
+
+\begin{figure}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+        \hline
+        \multicolumn{1}{|c|}{\diagbox{$A_{i}$}{$B_{j}$}} &          & 9        & 5        & 2        & 6        & 4        \\ \hline
+                                                         & 0        & $\infty$ & $\infty$ & $\infty$ & $\infty$ & $\infty$ \\ \hline
+        8                                                & $\infty$ & 1        & 3        & 6        & 2        & 4        \\ \hline
+        3                                                & $\infty$ & 6        & 2        & 1        & 3        & 1        \\ \hline
+        7                                                & $\infty$ & 2        & 2        & 5        & 1        & 3        \\ \hline
+        4                                                & $\infty$ & 5        & 1        & 2        & 2        & 0        \\ \hline
+        3                                                & $\infty$ & 6        & 2        & 1        & 3        & 1        \\ \hline
+    \end{tabular}
+    \caption{The DTW cost Matrix $M$ between vectors $A = [8, 3, 7, 4, 3]$ and $B = [9, 5, 2, 6, 4]$. The distance function for these one dimentional points is simply the absolute value of the difference. The blue line shows the optimal path between the vectors.
+    }
+    \label{fig:dtw_cost}
+\end{figure}
 \begin{figure}
     \centering
     \begin{tabular}{|c|c|c|c|c|c|c|}
@@ -84,27 +112,25 @@ From equation \ref{eq:dtw} we see that the distance $d_{i, j}$ depends on the di
         4                                                & $\infty$           & 14       & 6                & $7$                & $7$      & $5$\tikzmark{end3} \\ \hline
         3                                                & $\infty$           & 20       & 8                & $7$                & $10$     & $6$\tikzmark{end4} \\ \hline
     \end{tabular}
+    \caption{The DTW accumulated cost Matrix $M$ for vectors $A = [8, 3, 7, 4, 3]$ and $B = [9, 5, 2, 6, 4]$. The costs are based on the cost matrix in figure \ref{fig:dtw_cost}. The blue line shows the optimal path between the vectors. The optimal alignment from $A$ to $B$ is $[8\rightarrow9, 3\rightarrow(5, 2), 7\rightarrow6, 4\rightarrow4, 3\rightarrow4]$. The alignment cost (or DTW distance) is the value in the last matrix cell, in this case $M_{5,5} = 6$.}
+    \label{fig:dtw_acc_cost}
     \begin{tikzpicture}[overlay, remember picture]
         \draw[thick, blue, -, opacity=0.7] ($(pic cs:start1) + (-0.1,0.1)$) -- ($(pic cs:end1) + (-0.1,0.1)$);
         \draw[thick, blue, -, opacity=0.7] ($(pic cs:end1) + (-0.1,0.1)$) -- ($(pic cs:end2) + (-0.1,0.1)$);
         \draw[thick, blue, -, opacity=0.7] ($(pic cs:end2) + (-0.1,0.1)$) -- ($(pic cs:end3) + (-0.1,0.1)$);
         \draw[thick, blue, -, opacity=0.7] ($(pic cs:end3) + (-0.1,0.1)$) -- ($(pic cs:end4) + (-0.1,0.1)$);
     \end{tikzpicture}
-    \caption{The DTW Cost Matrix $M$ between vectors $A = [8, 3, 7, 4, 3]$ and $B = [9, 5, 2, 6, 4]$. The distance function for these one dimentional points is simply the absolute value of the difference. The blue line shows the optimal path between the vectors. The optimal alignment from $A$ to $B$ is $[8\rightarrow9, 3\rightarrow(5, 2), 7\rightarrow6, 4\rightarrow4, 3\rightarrow4]$. The alignment cost (or DTW distance) is the value in the last matrix cell, in this case $M_{5,5} = 6$.
-    }
-    \label{fig:dtw}
 \end{figure}
 
-\textcite{muller2007dynamic} discusses several ways to improve DTW, such as modifying the cost function to reduce the number of vertical and horizontal lines in the optimal path, thereby preventing the path from getting stuck on one sequence. One approach involves implementing lower weights for diagonal movements or altering the cost function to incorporate more of the previous points.
+\textcite{muller2007dynamic} discusses several ways to improve classical DTW, such as modifying the cost function to reduce the number of vertical and horizontal lines in the optimal path, thereby preventing the path from getting stuck on one sequence. One approach involves implementing lower weights for diagonal movements or altering the cost function to incorporate more of the previous points.
 
-Additionally, \textcite{muller2007dynamic} describes techniques to speed up DTW by coarsening data or by using global constrains. Coarsening the data allows for an initial rough estimation of the optimal path, followed by a more precise calculation in the selected areas of the matrix. Global constraints, such as the Sakoe-Chiba band and the Itakura parallelogram eliminate parts of the matrix. This requires less computation and ensures that the optimal path stays within some proximity to the main diagonal. The Sakoe-Chiba is discussed later in section 3.1.
+Additionally, \textcite{muller2007dynamic} describes techniques to speed up classical DTW by coarsening data or by using global constrains. Coarsening the data allows for an initial rough estimation of the optimal path, followed by a more precise calculation in the selected areas of the matrix. Global constraints, such as the Sakoe-Chiba band and the Itakura parallelogram eliminate parts of the matrix \cite{muller2007dynamic}. This requires less computation and ensures that the optimal path stays within some proximity to the main diagonal. The Sakoe-Chiba is discussed later in section 3.1.
 
-One challenge with DTW is that distances varies with the length of the vectors. The distance between longer vectors tend to be larger than for shorter vectors. This is because the final alignment cost summizes the alignment cost for all previous points along the optimal path. Consequently, more points lead to a higher alignment cost even if the trajectories are very similar. To adress this issue, normalized versions of DTW have been propsed, such as Average DTW (AvgDTW) and Max DTW (MaxDTW) \cite{zhao2018rest}. MaxDTW in particular will be explained in the following section.
+One challenge with DTW is that distances varies with the length of the vectors. The distance between longer vectors tend to be greater than for shorter vectors. This happens because the total alignment cost adds up the costs for all previous points along the optimal path. Consequently, more points lead to a higher alignment cost even if the trajectories are very similar. To adress this issue, normalized versions of DTW have been propsed, such as Average DTW and Max DTW \cite{zhao2018rest}. MaxDTW in particular will be explained in the following section.
 
-
-
-\subsection{Max Dynamic Time Warping}
-This is a variant of Dynamic Time Warping which changes the distance equation by taking the max of the distance and the former minimum instead of taking the sum. The new equation is \begin{equation}
+\subsection{Max DTW}
+\textcite{zhao2018rest} introduced Max Dynamic Time Warping (MaxDTW), a variant of classical DTW that accounts for the lengths of the vectors (trajectories). MaxDTW changes the cost function by taking the max of the distance and the former points minimum instead of taking the sum like in equation \ref{eq:dtw}. The new cost function is
+\begin{equation}
     \label{eq:max_dtw}
     \begin{aligned}
         d_{i, j} & = max(distance(A_{i}, B_{j}), \min \left\{ \begin{aligned}
@@ -114,9 +140,8 @@ This is a variant of Dynamic Time Warping which changes the distance equation by
                                                               \end{aligned} \right\})
     \end{aligned}
 \end{equation}
-Following the previous example, $d_{2, 2} = max(distance(A_{2}, B_{2}), 1)$
-
-\begin{figure}
+This new cost function doesen't accumulate like in classical DTW, it simply represents the worst alignment of the optimal path to the current cell. The final cost represents the highest cost for a single alignment along the optimal path for the vectors. An example of a MaxDTW cost matrix is shown in figure \ref{fig:max_dtw}, the vectors $A$ and $B$ are the same as in figure \ref{fig:dtw_acc_cost}. Here we can see that the end $M_{5,5} = 2$, this represents the highest cost along the optimal path, which is aligning $A_2 = 3$ to $B_2 = 5$, the cost $|A_2 - B_2| = 2$ is also the total cost for the vectors when applying MaxDTW.
+\begin{figure}[h]
     \centering
     \begin{tabular}{|c|c|c|c|c|c|c|}
         \hline
@@ -134,17 +159,9 @@ Following the previous example, $d_{2, 2} = max(distance(A_{2}, B_{2}), 1)$
         \draw[thick, blue, -, opacity=0.7] ($(pic cs:end2) + (-0.1,0.1)$) -- ($(pic cs:end3) + (-0.1,0.1)$);
         \draw[thick, blue, -, opacity=0.7] ($(pic cs:end3) + (-0.1,0.1)$) -- ($(pic cs:end4) + (-0.1,0.1)$);
     \end{tikzpicture}
-    \caption{The DTW Cost Matrix $M$ between vectors $A = [8, 3, 7, 4, 3]$ and $B = [9, 5, 2, 6, 4]$. The distance function for these one dimentional points is simply the absolute value of the difference. The blue line shows the optimal path between the vectors. The optimal alignment from $A$ to $B$ is $[8\rightarrow9, 3\rightarrow(5, 2), 7\rightarrow6, 4\rightarrow4, 3\rightarrow4]$. The alignment cost (or DTW distance) is the value in the last matrix cell, in this case $M_{5,5} = 6$. Multiple optimal path, the alignment cost of max DTW represents the highest distance cost for a single point along the optimal path.
+    \caption{The MaxDTW accumulated cost matrix $M$ for vectors $A = [8, 3, 7, 4, 3]$ and $B = [9, 5, 2, 6, 4]$. The costs are based on the cost matrix in figure \ref{fig:dtw_cost}. The blue line shows the optimal path between the vectors. The optimal alignment from $A$ to $B$ is $[8\rightarrow9, 3\rightarrow(5, 2), 7\rightarrow6, 4\rightarrow4, 3\rightarrow4]$. The alignment cost (or MaxDTW distance) is the value in the last matrix cell, in this case $M_{5,5} = 2$.
     }
-    \label{fig:dtw}
+    \label{fig:max_dtw}
 \end{figure}
 
-
-
-
-\subsection{Performance Metrics}
-\subsubsection{Compression Ratio}
-Compression ratio measures the amount of data compressed. This is calculated as $C_{r} = \frac{|o|}{|c|}$, where $C_{r}$ is the compression ratio, $|o|$ is the size of the original data, and $|c|$ is the size of the compressed data. Storing a 10GB file with 5GB gives a compression ratio of $10 / 5 = 2$, meaning it was stored using half the original size. This can also be written as a 2:1 compression ratio.
-
-\subsubsection{Compression Performance}
-Compression performance measures the speed of compression as well as the resource usage. Compression speed is simply the time it took to compress measured in seconds. Resource usage, however can be measured in a variety of ways, this depends on what kind of usage you want to measure, for example memory usage or CPU time. Computer executions like these have variance in performance, therefore it is important to measure the average for multiple runs when doing an experiment, both for compression speed and resource usage. Additionally it is important that when comparing compression performance that the measures were gathered in the same environment, meaning the experiment was executed on the same computer with the same version of the program. Otherwise the results are not comparable.
+MaxDTW is sensetive to outliers points because a single poor alignment can significantly increase the total alignment cost. Additionally, this measure doesn't indicate whether there are many points close to the alignment max or just one. This makes MaxDTW most useful to test threshold conditions. For instance, in an application where no point can have an alignment cost above a certain threshold. MaxDTW is also normalized and can be used to compare distances for sequences of varying lengths.
