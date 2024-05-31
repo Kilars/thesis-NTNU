@@ -155,7 +155,6 @@
 \RequirePackage{amsmath}                    % advanced math typesetting
 \RequirePackage{tikz}                       % draw lines in figures
 \usetikzlibrary{tikzmark, calc}
-\RequirePackage{nicematrix}
 \RequirePackage[                            % subfigures with captions within figures
     font=small,                             % and customisation of captions
     labelfont=bf,
@@ -166,9 +165,9 @@
     labelfont=bf,
     margin=\parindent
 ]{subcaption}
-\RequirePackage{xcolor}                     % selecting text color
 \RequirePackage{emptypage}                  % empty pages should be blank
 \RequirePackage{csquotes}                   % recommended for biblatex
+\RequirePackage{xcolor}                     % selecting text color
 \RequirePackage[
     backend=biber,
     style=ieee,

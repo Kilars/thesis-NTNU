@@ -70,11 +70,7 @@ Note that all points of the reference trajectories are indexed in the R-tree, as
 
 After the reference set is built from a sample of all trajectories, it should be packed. This is because the data will not change and can be considered static. The Packed Hilbert R-tree would likely perform well in this case since it is simple and efficient with for low dimensionality. Additionally it has a very high storage utilization, which is beneficial if the size of the reference set is a concern. However, due to time constraints, this was not implemented. Nonetheless, the authors recommend exploring this as future work.
 
-\subsection{Distance Measure}
-Both DTW and MaxDTW have been implemented in order to test the differences. Discuss:
-\begin{itemize}
-    \item Normal DTW is highly dependent on length of the trajectory which makes it impossible to choose a threshold that fits the whole dataset
-    \item Therefore max dtw was chosen as this is normalized for length (avgDTW could also be used)
-    \item Maxdtw can underestimate the actual distance for trajectories
-    \item Interesting to consider other distance measures and DTW approximation.
-\end{itemize}
+\subsection{MaxDTW}
+MaxDTW has been implemented locally in Rust following the definitions in \ref{sec:dtw}. One important efficiency gain was through memoization of DTW solutions. \\ \textit{greedy\_mrt\_expand} in code listing \ref{lst:ca_expand}, expands with one point at a time, this is like adding one row and column to the DTW matrix. Without memoization, the entire matrix must be recalculated. However, with memoization, only the new column and row need to be calculated, using the previously computed accumulated cost matrix. Additionally an optional Sakoe-Chiba band was implemented like described in \ref{sec:sakoe}.
+
+At one point, we considered using the external Rust library \textit{dtw\_rs} instead of a custom implementation. To prepare for this, we contributed to it by finishing the Sakoe-Chiba band implementation. However, due to the aforementioned memoization, which requires some state awareness from the local environment, integrating this library demanded too many modiciations. Consequently, we decided to develop our own implementation. Although this contribution was not used in our final results, it is available here: \\ \href{https://github.com/shshemi/dtw-rs/pull/1/files}{https://github.com/shshemi/dtw-rs/pull/1/files}.

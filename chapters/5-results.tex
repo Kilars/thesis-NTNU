@@ -2,7 +2,7 @@
 \label{chap:res}
 In this section we will present and discuss the results from the experiments on the REST implementation. The experiments were conducted on an Intel(R) Xeon(R) Gold 6426Y processor with 500 GB RAM.
 
-The dataset used for these experiments are distributed by \textcite{porto} and consists of taxi routes in the city Porto over the course of one year. These routes are in the form of trajectories. In total there are 1.7M trajectories, for most experiments 100K are used, otherwise this will be explicitly stated. 100K is used in order to achieve a feasible runtime, however the methods applied can also be used for larger dataset.
+The dataset used for these experiments is distributed by \textcite{porto} and consists of taxi routes in the city Porto over the course of one year. These routes are in the form of trajectories with latitude longitude points. In total there are 1.7M trajectories, for most experiments 100K are used, otherwise this will be explicitly stated. 100K is used in order to achieve a feasible runtime, however the methods applied can also be used for larger dataset.
 
 \section{Reference Set Construction}
 Firstly we will look at reference set construction, both in terms of performance and set size. The metrics \textit{Sample size} and \textit{Set size} is the sample size used to construct the reference set and resulting set size. \textit{REST} is the implementation of the original algorithm, while \textit{REST-SF} is the same implementation with a spatial filter. The window size is also indicated in the name, following SF. \textit{REST-SF30} indicates the square's side length in the range query in meters. A window size of 30 means a box of $30\times30m^2$ for r-tree range queries.
