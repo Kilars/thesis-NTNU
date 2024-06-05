@@ -8,11 +8,11 @@
 
 %% IDENTIFICATION
 
-\xdef\ntnuthesisdate{June 11, 2024}
+\xdef\ntnuthesisdate{June, 2024}
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{ntnuthesis}
 [\ntnuthesisdate\space
-    June 11 2024]
+    June 2024]
 
 
 %% CLASS OPTIONS

@@ -2,9 +2,9 @@
 \section{Motivation}
 % More and more spatial data -> compression methods for space saving -> in order to compress and to compare the quality of the compression we need trajectory similarity ( distance measure is a large part of compression )
 
-In the era of digitilaztion more and more devices are generating data, in particular geodata, which is data containing the location of entities (like a car or a plane) and people. As well as sequences of locations which is known as trajectories. The sheer amount of data is challenging to handle because it is difficult to store and transmit. This data is useful in analysing movement patterns and gives insight in frequency of different paths.
+In the era of digitalization more and more devices are generating data, in particular geodata, which is data containing the location of entities (like a car or a plane) and people. As well as sequences of locations which is known as trajectories. The sheer amount of data is challenging to handle because it is difficult to store and transmit. This data is useful in analyzing movement patterns and gives insight in frequency of different paths.
 
-A common approach to solve this is to compress the data, this means storing it with less space while containing most of the same information. There exists many different compression methods for all kinds of data not only geodata, however there has also emerged som compression methods specific for trajectories. For example PRESS, which compresses trajectories by representing them using trajectories from a subset of the data. This method is known as a "reference-based" approach. The quality of the subset is crucial, a good set has low redundancy and high coverage. \textcite{zhao2018rest} propsed another reference-based approach "REST" which is, according to the authors:
+A common approach to solve this is to compress the data, this means storing it with less space while containing most of the same information. There exists many compression methods for all kinds of data not only geodata, however there has also emerged some compression methods specific for trajectories. For example PRESS, which compresses trajectories by representing them using trajectories from a subset of the data. This method is known as a "reference-based" approach. The quality of the subset is crucial, a good set has low redundancy and high coverage. \textcite{zhao2018rest} propsed another reference-based approach "REST" which is, according to the authors:
 \begin{quote}
     "The first data-driven approach to compress trajectories in unconstrained space with both spatial and temporal dimensions considered."
 \end{quote}
@@ -14,7 +14,7 @@ In addition reference based compression provides another key advantage, namely b
 
 \section{Research Questions}
 %claim
-In this paper we will implement a version of REST for spatial-only compression with a spatial index. This is aimed at decreasing the runtime even as the reference set grows large while maintaing a good compression ratio. Additionally, we will explore the ratio between reference set size and the sample size. If the reference set size converges as the sample size grows, this indicates that REST and other reference based methods can achieve high compression. As well as comparing our implementation of the original REST to our spatial index variant. From this we derive the following research questions:
+In this paper we will implement a version of REST for spatial-only compression with a spatial index. This is aimed at decreasing the runtime even as the reference set grows large while maintaining a good compression ratio. Additionally, we will explore the ratio between reference set size and the sample size. If the reference set size converges as the sample size grows, this indicates that REST and other reference based methods can achieve high compression. As well as comparing our implementation of the original REST to our spatial index variant. From this we derive the following research questions:
 
 \begin{description}
     \item[RQ1] Does the reference set size converge as the sample size grows?
