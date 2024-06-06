@@ -13,6 +13,7 @@ REST is a set of different methods which are all reference based and data driven
 In addition reference based compression provides another key advantage, namely being readable without decompression. This increases the usefulness of the compression. The need for decompression is a major disadvantage because it requires another step before the data is readable. This means more infrastructure to perform the decompression, as well as the resources used in the decompression, which can be a resource-intensive process.
 
 \section{Research Questions}
+\label{sec:questions}
 %claim
 In this paper we will implement a version of REST for spatial-only compression with a spatial index. This is aimed at decreasing the runtime even as the reference set grows large while maintaining a good compression ratio. Additionally, we will explore the ratio between reference set size and the sample size. If the reference set size converges as the sample size grows, this indicates that REST and other reference based methods can achieve high compression. As well as comparing our implementation of the original REST to our spatial index variant. From this we derive the following research questions:
 
