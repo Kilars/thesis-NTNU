@@ -1,0 +1,196 @@
+\glsdefs@newdocentry{latex}%
+{%
+name={latex},%
+sort={latex},%
+type={main},%
+first={latex},%
+firstplural={latexs},%
+text={latex},%
+plural={latexs},%
+description={Is a mark up language specially suited for scientific documents},%
+descriptionplural={Is a mark up language specially suited for scientific documents},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={},%
+longplural={},%
+short={},%
+shortplural={},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{bibliography}%
+{%
+name={bibliography},%
+sort={bibliography},%
+type={main},%
+first={bibliography},%
+firstplural={bibliographies},%
+text={bibliography},%
+plural={bibliographies},%
+description={A list of the books referred to in a scholarly work, typically printed as an appendix},%
+descriptionplural={A list of the books referred to in a scholarly work, typically printed as an appendix},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={},%
+longplural={},%
+short={},%
+shortplural={},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{maths}%
+{%
+name={mathematics},%
+sort={mathematics},%
+type={main},%
+first={mathematics},%
+firstplural={mathematicss},%
+text={mathematics},%
+plural={mathematicss},%
+description={Mathematics is what mathematicians do},%
+descriptionplural={Mathematics is what mathematicians do},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={},%
+longplural={},%
+short={},%
+shortplural={},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{phd}%
+{%
+name={PhD},%
+sort={PhD},%
+type={acronym},%
+first={philosophiae doctor\glsspace (PhD)},%
+firstplural={philosophiae doctor\acrpluralsuffix \glsspace (PhD\acrpluralsuffix )},%
+text={PhD},%
+plural={PhD\acrpluralsuffix },%
+description={philosophiae doctor},%
+descriptionplural={philosophiae doctor\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={philosophiae doctor},%
+longplural={philosophiae doctors},%
+short={PhD},%
+shortplural={PhDs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{CoPCSE}%
+{%
+name={CoPCSE@NTNU},%
+sort={CoPCSE@NTNU},%
+type={acronym},%
+first={Community of Practice in Computer ScienceEducation at NTNU\glsspace (CoPCSE@NTNU)},%
+firstplural={Community of Practice in Computer ScienceEducation at NTNU\acrpluralsuffix \glsspace (CoPCSE@NTNU\acrpluralsuffix )},%
+text={CoPCSE@NTNU},%
+plural={CoPCSE@NTNU\acrpluralsuffix },%
+description={Community of Practice in Computer ScienceEducation at NTNU},%
+descriptionplural={Community of Practice in Computer ScienceEducation at NTNU\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Community of Practice in Computer ScienceEducation at NTNU},%
+longplural={Community of Practice in Computer ScienceEducation at NTNUs},%
+short={CoPCSE@NTNU},%
+shortplural={CoPCSE@NTNUs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{gcd}%
+{%
+name={GCD},%
+sort={GCD},%
+type={acronym},%
+first={Greatest Common Divisor\glsspace (GCD)},%
+firstplural={Greatest Common Divisor\acrpluralsuffix \glsspace (GCD\acrpluralsuffix )},%
+text={GCD},%
+plural={GCD\acrpluralsuffix },%
+description={Greatest Common Divisor},%
+descriptionplural={Greatest Common Divisor\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Greatest Common Divisor},%
+longplural={Greatest Common Divisors},%
+short={GCD},%
+shortplural={GCDs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{mrt}%
+{%
+name={MRT},%
+sort={MRT},%
+type={acronym},%
+first={Matchable Reference Trajectory\glsspace (MRT)},%
+firstplural={Matchable Reference Trajectory\acrpluralsuffix \glsspace (MRT\acrpluralsuffix )},%
+text={MRT},%
+plural={MRT\acrpluralsuffix },%
+description={Matchable Reference Trajectory},%
+descriptionplural={Matchable Reference Trajectory\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Matchable Reference Trajectory},%
+longplural={Matchable Reference Trajectorys},%
+short={MRT},%
+shortplural={MRTs},%
+counter={page},%
+parent={},%
+%
+}%
+

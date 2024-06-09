@@ -1,0 +1,20 @@
+\begin{figure}
+    \begin{lstlisting}[
+        caption={Max DTW from source code written in Rust},
+        language=Rust,
+        label=lst:maxdtw,
+        numbers=left
+    ]
+    pub fn max_dtw<'a>(
+    ta: &'a [Point],
+    tb: &'a [Point],
+    map: &mut HashMap<(&'a [Point], &'a [Point]), f64>,
+    ) -> f64 {
+        match (ta, tb) {
+            ([], []) => 0.0,
+            ([.., a], [.., b]) => a.distance(b).max(q(ta, tb, map)),
+            _ => f64::MAX,
+        }
+    }
+    \end{lstlisting}
+\end{figure}
