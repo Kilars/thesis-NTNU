@@ -1,19 +1,19 @@
 \begin{figure}
     \begin{lstlisting}[
-        caption={Psuedo code for reference set construction with spatial filter},
+        caption={Psuedocode for reference set construction with spatial filter},
         language=Pascal,
         label=lst:ca_sf,
         numbers=left
     ]
-        Input: T, rs
-        Output: ReferenceSet
+        Input: SampleTrajectories, CompressionThreshold
+        Output: (ReferenceSet, RTree)
         ----------------------------------------
         ReferenceSet = []
         RTree = new RTree()
 
         for ST in SampleTrajectorySet
-            CR = Compress(ST, ReferenceSet)
-            if CR < 5 
+            CompressionRatio = Compress(ST, ReferenceSet)
+            if CompressionRatio < CompressionThreshold 
                 i = ReferenceSet.len()
                 for (pt, j) in ST
                     RTree.insert(pt, (i, j))

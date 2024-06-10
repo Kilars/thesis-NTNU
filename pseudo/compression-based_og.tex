@@ -1,19 +1,19 @@
 \begin{figure}[t]
     \begin{lstlisting}[
-        caption={Psuedo code for reference set construction},
+        caption={Psuedocode for reference set construction},
         language=Pascal,
         label=lst:ca_og,
         numbers=left
     ]
-        Input: T, rs
+        Input: SampleTrajectories, CompressionThreshold
         Output: ReferenceSet
         ----------------------------------------
 
         ReferenceSet = []
 
         for ST in SampleTrajectorySet
-            CR = Compress(ST, ReferenceSet)
-            if CR < 5 
+            CompressionRatio = Compress(ST, ReferenceSet)
+            if CompressionRatio < CompressionThreshold 
                 ReferenceSet.push(ST)
 
         ReferenceSet
