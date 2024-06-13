@@ -22,8 +22,9 @@ The first point is given an estimation of positive infinity, as it cannot be rem
 
 In figure \ref{fig:squish} an example of the algorithm with a buffer size 4 is shown. The buffer is gradually filled up with points and their estimated introduction of error. When the buffer is full and point $E$ is processed, the highest priority point $B$ is removed. After removal, point $E$ is added and the error is re-estimated for $B$'s neighbors $A$ and $C$.
 
-While this algorithm performs well compared to others when considering SED for small compression ratios, it has severe drawbacks such as the local estimations' incapability with large compression ratios. As a result, \textcite{muckell2014compression} introduced Spatial QUalIty Simplification Heuristic Extended (SQUISH-E), \raggedright an improved version of the original algorithm.
-\begin{wrapfigure}[25]{r}{0.5\textwidth}
+While this algorithm performs well compared to others when considering SED for small compression ratios, it has severe drawbacks such as the local estimations' incapability with large compression ratios. As a result, \textcite{muckell2014compression} introduced Spatial QUalIty Simplification Heuristic Extended (SQUISH-E), an improved version of the original algorithm.
+
+\begin{wrapfigure}[23]{r}{0.5\textwidth}
     \includegraphics[width=0.5\textwidth]{./figures/squish.png}
     \caption{SQUISH estimates the lowest SED error
         and removes the point which is predicted to introduce
