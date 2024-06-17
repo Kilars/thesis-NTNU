@@ -4,23 +4,23 @@
 
 In the era of digitalization more and more devices are generating data, in particular geodata, which is data containing the location of entities (like a car or a plane) and people. As well as sequences of locations which is known as trajectories. The sheer amount of data is challenging to handle because it is difficult to store and transmit. This data is useful in analyzing movement patterns and gives insight in frequency of different paths.
 
-A common approach to solve this is to compress the data, this means storing it with less space while containing most of the same information. There exists many compression methods for all kinds of data not only geodata, however there has also emerged some compression methods specific for trajectories. For example PRESS, which compresses trajectories by representing them using trajectories from a subset of the data. This method is known as a "reference-based" approach. The quality of the subset is crucial, a good set has low redundancy and high coverage. \textcite{zhao2018rest} propsed another reference-based approach "REST" which is, according to the authors:
+A common approach to solve this is to compress the data, this means storing it with less space while containing most of the same information. There exists many compression methods for all kinds of data not only geodata, however there has also emerged some compression methods specific for trajectories. For example PRESS, which compresses trajectories by representing them using trajectories from a subset of the data. This method is known as a "reference-based" approach. The quality of the subset is crucial, a good set has low redundancy and high coverage. \textcite{zhao2018rest} proposed another reference-based approach "REST" which is, according to the authors:
 \begin{quote}
     "The first data-driven approach to compress trajectories in unconstrained space with both spatial and temporal dimensions considered."
 \end{quote}
-REST is a set of different methods which are all reference based and data driven. The different methods have different use cases, there are two main axes for the use cases: spatial-only/spatiotemporal and greedy/optimal. The results show REST outperforming other state of the art methods in terms of compression ratio, runtime and storage space. This is because of the inherent adaptability from data driven compression and the large space savings from a reference based approach.
+REST is a set of different methods which are all reference based and data driven. The different methods have different use cases, there are two main axes for the use cases: spatial-only/spatiotemporal and greedy/optimal. The results show REST outperforming other state-of-the-art methods in terms of compression ratio, runtime and storage space. This is because of the inherent adaptability from data driven compression and the large space savings from a reference based approach.
 
-In addition reference based compression provides another key advantage, namely being readable without decompression. This increases the usefulness of the compression. The need for decompression is a major disadvantage because it requires another step before the data is readable. This means more infrastructure to perform the decompression, as well as the resources used in the decompression, which can be a resource-intensive process.
+In addition, reference based compression provides another key advantage, \\ namely being readable without decompression. This increases the usefulness of the compression. The need for decompression is a major disadvantage because it requires another step before the data is readable. This means more infrastructure to perform the decompression, as well as the resources used in the decompression, which can be a resource-intensive process.
 
 \section{Research Questions}
 \label{sec:questions}
 %claim
-In this paper we will implement a version of REST for spatial-only compression with a spatial index. This is aimed at decreasing the runtime even as the reference set grows large while maintaining a good compression ratio. Additionally, we will explore the ratio between reference set size and the sample size. If the reference set size converges as the sample size grows, this indicates that REST and other reference based methods can achieve high compression. As well as comparing our implementation of the original REST to our spatial index variant. From this we derive the following research questions:
+In this thesis we implement multiple variants of REST for spatial-only compression, aimed at decreasing the runtime while maintaining a good compression ratio. Additionally, we will explore efficiency of the reference based compression, by analyzing the sample size needed to effectively represent the entire dataset. If high compression ratios can be reached with a small sample size, this indicates that REST and other reference based methods are good strategies for compression. We also compare REST to other non reference based compression methods. From this we derive the following research questions:
 
 \begin{description}
-    \item[RQ1] Does the reference set size converge as the sample size grows?
-    \item[RQ2] Can the spatial index significantly improve runtime while maintaining a similar compression ratio?
-    \item[RQ3] Does our implementation of the original REST outperform state of the art methods in terms of compression ratio and runtime?
+    \item[RQ1] Does our variants of REST significantly improve runtime while maintaining a similar compression ratio?
+    \item[RQ2] Does REST outperform non reference based methods in terms of compression ratio and runtime?
+    \item[RQ3] Does the reference set effectively represent the characteristics of the dataset as a whole using a small sample size?
 \end{description}
 
 \section{Outline}
@@ -30,7 +30,7 @@ Firstly \textbf{Chapter 2} is mostly based on the former report and summarizes r
 \newline
 \textbf{\hyperref[chap:impl]{Chapter~\ref*{chap:rel}}} goes through work similar to that of this thesis.
 \newline
-\textbf{\hyperref[chap:impl]{Chapter~\ref*{chap:impl}}} explains the specific implementation details of the REST algorithm. As well as a rundown of the different variants made.
+\textbf{\hyperref[chap:methodology]{Chapter~\ref*{chap:impl}}} explains the specific implementation details of the REST algorithm. As well as a rundown of the different variants made.
 \newline
 \textbf{\hyperref[chap:impl]{Chapter~\ref*{chap:res}}} presents the results of the experiments conducted and discusses them in relation to the research questions.
 
