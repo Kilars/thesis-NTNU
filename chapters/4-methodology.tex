@@ -130,7 +130,7 @@ Additionally, an optional Sakoe-Chiba band was implemented like described in \re
 
 \input{pseudo/maxdtw.tex}
 
-Kommentar: Kan gå inn på implementasjon, men det er mye gjenfortelling fra bakgrunn.
+At one point, we considered using the external Rust library \textit{dtw\_rs} instead of a custom implementation. To prepare for this, we contributed to it by finishing the Sakoe-Chiba band implementation. However, due to the aforementioned memoization, which requires some state awareness from the local environment, integrating this library demanded too many modifications. Consequently, we decided to develop our own implementation. Although this contribution was not used in our final results, it is available here: \\ \href{https://github.com/shshemi/dtw-rs/pull/1/files}{https://github.com/shshemi/dtw-rs/pull/1/files}.
 
 \section{Douglas-Peucker with MaxDTW}
 DP using the PD distance measure from section \ref{subsec:PD} as the halting condition, is simpler than a Max DTW threshold. The compression process is much cheaper than DTW, but it does not meet the same criteria, making the results incomparable. However, they are quite similar, the difference is that DP calculates the perpendicular distance to the line connecting the previous and subsequent point in the line, while Max DTW calculates the longest distance of all the optimal point alignments. The limitations of DP are that the alignment of point to line is not as robust as the DTW alignment. Additionally, the perpendicular distance to the line of previous and subsequent point is a much less strict requirement than point to point distance.
@@ -157,6 +157,5 @@ The \textit{total compression ratio} is similar, but includes the points in the 
 \begin{equation}\label{eq:tot_cr}
     tot\_cr = \frac{(all\_points + points\_in\_set) \times 8}{references \times 16 + direct\_points \times 8}
 \end{equation}
-% At one point, we considered using the external Rust library \textit{dtw\_rs} instead of a custom implementation. To prepare for this, we contributed to it by finishing the Sakoe-Chiba band implementation. However, due to the aforementioned memoization, which requires some state awareness from the local environment, integrating this library demanded too many modiciations. Consequently, we decided to develop our own implementation. Although this contribution was not used in our final results, it is available here: \\ \href{https://github.com/shshemi/dtw-rs/pull/1/files}{https://github.com/shshemi/dtw-rs/pull/1/files}.
-% \section{Experiment setup}
+
 
