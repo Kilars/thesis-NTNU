@@ -1,0 +1,25 @@
+\chapter{Conclusion}\label{chap:conclusion}
+In this thesis we recreated the reference based and data driven REST, from the work of \textcite{zhao2018rest}, in order to gauge the potential of reference based methods compared to others. Multiple variants were implemented to improve the runtime of the algorithm. The most effective measure was to use a range query in an R-tree to select fewer candidate trajectories. The KNN variant was also effective in combination with the spatial filter.
+
+A version of DP using a DTW halting condition was also implemented and served as the basis for non reference based methods. Experiments were performed to measure the compression ratio and runtime of different configurations.
+
+To answer RQ1, the runtime and compression ratio of the variants must be discussed. Firstly, we will discuss to which degree the REST variants maintain the compression ratio. In general, increasing the window size of the spatial filter variants increases the compression ratio, with REST as an upper bound. Consequently, the window size can be adjusted to fit different requirements of compression ratio. For the spatial filter variant, as well as the spatial filter with KNN, the compression ratio is maintained to a satisfactory degree. In regard to XREST the compression ratio is much lower than REST. The variant using Sakoe-Chiba band only saw a slight loss in compression ratio compared to REST.
+
+Secondly, we compare the runtime of REST compared to the variants. The spatial filter with KNN had the most prominent increase in runtime. Neither XREST nor the Sakoe-Chiba band had more than a slight improvement. However, we notice that DTW is an expensive computation which limits the possible improvements. The most efficient measures were aimed at reducing DTW calculations.
+
+All in all, the only variant that satisfies both conditions of RQ1 is the spatial filter variant with KNN. The best example is, \textit{REST-SF120-KNN3}, which has 95\% of the compression ratio of REST, and is 9 times faster.
+
+RQ2 is about the comparisons of REST to other non reference based methods, we used DP-DTW for this. DP-DTW has a much lower compression ratio than all REST variants, except for XREST. REST had a compression ratio of 5.09, while DP-DTW had 1.43, more than 3 times lower than REST. However, in terms of runtime, REST and DP-DTW were similar. This means REST itself does not outperform DP-DTW, but the sped up variants do. REST with a spatial filter and KNN significantly outperforms DP-DTW both in terms of compression ratio and runtime.
+
+DP-DTW is used a basis for non reference based methods and in that regard REST variants seem to outperform them. However, a more comprehensive comparison of modern non reference based compression algorithms, such as PRESS and SQUISH, should be conducted before any conclusion is drawn.
+
+To answer RQ3, we measured the ratio between the sample size and the size of the whole set. The experimental results show that a sample size 4\% of the dataset reaches a total compression ratio above 5. This indicates that the reference set generated from REST represents the data with high coverage, using a small sample size.
+
+In general, the results indicate that REST with techniques to improve runtime, can compress large amounts of trajectories using a small sample size. It outperforms other methods significantly, both in terms of runtime and compression ratio. The variants implemented significantly improved runtime, while maintaining the compression ratio. However, with DTW as a trajectory comparison, REST is an expensive method, even with the increased performance from the variants.
+
+\section{Future Work}
+To further measure the potential of REST, more experiments must be conducted. Experiments comparing REST to other modern trajectory compression methods like PRESS and SQUISH are required to determine which is more effective.
+
+Additionally, experiments using different datasets are needed to further verify our results. There are many factors that can affect reference based compression: different logging frequencies, size of cities, speed of vehicles, etc. To understand the impact of these factors is important when using REST for efficient compression. Note that reference based compression is not limited to moving vehicle trajectories. Although moving vehicles is the most common use case, any large set of trajectories where similarities are expected, may benefit from reference based compression.
+
+Implementing REST with another trajectory similarity measure, for example SED, would be useful to improve runtime.

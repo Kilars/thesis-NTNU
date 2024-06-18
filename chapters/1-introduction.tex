@@ -4,13 +4,13 @@
 
 In the era of digitalization more and more devices are generating data, in particular geodata, which is data containing the location of entities (like a car or a plane) and people. As well as sequences of locations which is known as trajectories. The sheer amount of data is challenging to handle because it is difficult to store and transmit. This data is useful in analyzing movement patterns and gives insight in frequency of different paths.
 
-A common approach to solve this is to compress the data, this means storing it with less space while containing most of the same information. There exists many compression methods for all kinds of data not only geodata, however there has also emerged some compression methods specific for trajectories. For example PRESS, which compresses trajectories by representing them using trajectories from a subset of the data. This method is known as a "reference-based" approach. The quality of the subset is crucial, a good set has low redundancy and high coverage. \textcite{zhao2018rest} proposed another reference-based approach "REST" which is, according to the authors:
+A common approach to solve this is to compress the data, this means storing it with less space while containing most of the same information. There exists many compression methods for all kinds of data not only geodata, however there has also emerged some compression methods specific for trajectories. For example PRESS, from \textcite{song2014press}, which compresses trajectories by representing them using trajectories from a subset of the data. This method is a "reference-based" approach. The quality of the subset is crucial, a good set has low redundancy and high coverage. \textcite{zhao2018rest} proposed another reference-based approach "REST" which is, according to the authors:
 \begin{quote}
     "The first data-driven approach to compress trajectories in unconstrained space with both spatial and temporal dimensions considered."
 \end{quote}
 REST is a set of different methods which are all reference based and data driven. The different methods have different use cases, there are two main axes for the use cases: spatial-only/spatiotemporal and greedy/optimal. The results show REST outperforming other state-of-the-art methods in terms of compression ratio, runtime and storage space. This is because of the inherent adaptability from data driven compression and the large space savings from a reference based approach.
 
-In addition, reference based compression provides another key advantage, \\ namely being readable without decompression. This increases the usefulness of the compression. The need for decompression is a major disadvantage because it requires another step before the data is readable. This means more infrastructure to perform the decompression, as well as the resources used in the decompression, which can be a resource-intensive process.
+In addition, reference based compression provides another key advantage, \\ namely being readable without decompression. This increases the usefulness of the compression. The need for decompression when using other methods is a major disadvantage because it requires another step before the data is readable. This means more infrastructure to perform the decompression, as well as the resources used in the decompression, which can be a resource-intensive process.
 
 \section{Research Questions}
 \label{sec:questions}
@@ -24,17 +24,20 @@ In this thesis we implement multiple variants of REST for spatial-only compressi
 \end{description}
 
 \section{Outline}
-This thesis is a continuation of a project from the course \textit{TDT4151 - Computer Science, Specialization Project}. We do not assume that the reader is familiar with the project, so we will repeat the relevant findings in chapter 2 of this thesis. In addition, some sections have been expanded because they have become more relevant as the thesis took shape. This is specifically the section 2.1 "REST" and 2.4 "DTW" have been expanded. Here is the structure of this thesis:
+This thesis is a continuation of a project from the course \textit{TDT4151 - Computer Science, Specialization Project}. We do not assume that the reader is familiar with the project, so we will repeat the relevant findings in chapter 2 of this thesis. In addition, some sections have been expanded and changed as the thesis progressed. This sections with significant changes are: 2.1 "Trajectory Compression", 2.2 "Dynamic Time Warping", 2.7 R-trees. The remaining sections: 2.3 "Douglas-Peucker", 2.4 "SQUISH and SQUISH-E", 2.5 "PRESS", 2.6 "REST", are reused directly from the report. Here is the structure of this thesis:
 
-Firstly \textbf{Chapter 2} is mostly based on the former report and summarizes relevant theory.
+\textbf{\hyperref[chap:bg]{Chapter~\ref*{chap:bg}}} summarizes the relevant theory, it is mostly based on the previous reports.
 \newline
-\textbf{\hyperref[chap:impl]{Chapter~\ref*{chap:rel}}} goes through work similar to that of this thesis.
+\textbf{\hyperref[chap:rel]{Chapter~\ref*{chap:rel}}} goes through work related to this thesis.
 \newline
-\textbf{\hyperref[chap:methodology]{Chapter~\ref*{chap:impl}}} explains the specific implementation details of the REST algorithm. As well as a rundown of the different variants made.
+\textbf{\hyperref[chap:method]{Chapter~\ref*{chap:method}}} explains how the research questions were answered. It discusses which algorithms were created and how the experiments were set up.
 \newline
-\textbf{\hyperref[chap:impl]{Chapter~\ref*{chap:res}}} presents the results of the experiments conducted and discusses them in relation to the research questions.
+\textbf{\hyperref[chap:res]{Chapter~\ref*{chap:res}}} presents the results of the experiments conducted and discusses them in relation to the research questions.
+\newline
+\textbf{\hyperref[chap:conclusion]{Chapter~\ref*{chap:conclusion}}} concludes the thesis by discussing the research questions in light of all results. It also mentions future work needed to further explore the topic.
 
-For the source code for the algorithm and experiment setup see:\\ https://github.com/Kilars/master-code/algo.
+
+The source code for the algorithms and the experimental setup is available here:\\ https://github.com/Kilars/master-code/algo.
 % To see the contribution made to the open-source rust library see:
 % https://github.com/shshemi/dtw-rs/pull/1/files#diff-344ba2b71ffb93beac576f22ee219b4247385dd9b91f5f0b33ab583aab016427
 
