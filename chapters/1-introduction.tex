@@ -2,30 +2,29 @@
 \section{Motivation}
 % More and more spatial data -> compression methods for space saving -> in order to compress and to compare the quality of the compression we need trajectory similarity ( distance measure is a large part of compression )
 
-In the era of digitalization more and more devices are generating data, in particular geodata, which is data containing the location of entities (like a car or a plane) and people. As well as sequences of locations which is known as trajectories. The sheer amount of data is challenging to handle because it is difficult to store and transmit. This data is useful in analyzing movement patterns and gives insight in frequency of different paths.
+In the era of digitalization, an increasing number of devices are generating data, specifically geodata. Geodata refers to data that contains the location information of entities, such as cars or planes, as well as people. This data consists of sequences of locations, also known as trajectories. However, the sheer volume of data is challenging to handle due to difficulties in storage and transmission. Nevertheless, this data is valuable as it enables analysis of movement patterns and provides insights into the frequency of different paths.
 
-A common approach to solve this is to compress the data, this means storing it with less space while containing most of the same information. There exists many compression methods for all kinds of data not only geodata, however there has also emerged some compression methods specific for trajectories. For example PRESS, from \textcite{song2014press}, which compresses trajectories by representing them using trajectories from a subset of the data. This method is a "reference-based" approach. The quality of the subset is crucial, a good set has low redundancy and high coverage. \textcite{zhao2018rest} proposed another reference-based approach "REST" which is, according to the authors:
+A common approach to solve this problem is to compress the data. This means storing the data using less space while still retaining most of the same information. There are many compression methods for all kinds of data not only geodata. However, there has also emerged some compression methods specifically for trajectory compression. One example is PRESS, from \textcite{song2014press}, which compresses trajectories by representing them using nodes from the road network. This method is a "reference-based" approach. \textcite{zhao2018rest} proposed another reference-based approach called "REST" which is, according to the authors:
 \begin{quote}
     "The first data-driven approach to compress trajectories in unconstrained space with both spatial and temporal dimensions considered."
 \end{quote}
-REST is a set of different methods which are all reference based and data driven. The different methods have different use cases, there are two main axes for the use cases: spatial-only/spatiotemporal and greedy/optimal. The results show REST outperforming other state-of-the-art methods in terms of compression ratio, runtime and storage space. This is because of the inherent adaptability from data driven compression and the large space savings from a reference based approach.
+REST is a set of different methods that are all reference-based and data-driven. The different methods have different use cases, there are two main axes for the use cases: spatial-only/spatiotemporal and greedy/optimal. The results show that REST outperforms other state-of-the-art methods in terms of compression ratio, runtime and storage space. This is because of the inherent adaptability of data-driven compression and the large space savings from a reference-based approach.
 
-In addition, reference based compression provides another key advantage, \\ namely being readable without decompression. This increases the usefulness of the compression. The need for decompression when using other methods is a major disadvantage because it requires another step before the data is readable. This means more infrastructure to perform the decompression, as well as the resources used in the decompression, which can be a resource-intensive process.
+In addition, reference-based compression provides another key advantage, namely being readable without decompression. This increases the usefulness of the compression. The need for decompression when using other methods is a major disadvantage because it requires an additional step before the data is readable. This leads more to infrastructure in order to perform the decompression, as well as the decompression itself, which can be a resource-intensive process.
 
 \section{Research Questions}
 \label{sec:questions}
 %claim
-In this thesis we implement multiple variants of REST for spatial-only compression, aimed at decreasing the runtime while maintaining a good compression ratio. Additionally, we will explore efficiency of the reference based compression, by analyzing the sample size needed to effectively represent the entire dataset. If high compression ratios can be reached with a small sample size, this indicates that REST and other reference based methods are good strategies for compression. We also compare REST to other non reference based compression methods. From this we derive the following research questions:
+In this thesis we implement multiple variants of REST for spatial-only compression, aimed at decreasing the runtime while maintaining a good compression ratio. Additionally, we analyze the efficiency of reference-based compression, by determining the sample size required to effectively represent the entire dataset. If high compression ratios can be achieved with a small sample size, this indicates that REST and other reference-based methods are effective compression strategies. We also compare REST to other non reference-based compression methods. From this we derive the following research questions:
 
 \begin{description}
     \item[RQ1] Does our variants of REST significantly improve runtime while maintaining a similar compression ratio?
-    \item[RQ2] Does REST outperform non reference based methods in terms of compression ratio and runtime?
+    \item[RQ2] Does REST outperform non reference-based methods in terms of compression ratio and runtime?
     \item[RQ3] Does the reference set effectively represent the characteristics of the dataset as a whole using a small sample size?
 \end{description}
 
 \section{Outline}
-This thesis is a continuation of a project from the course \textit{TDT4151 - Computer Science, Specialization Project}. We do not assume that the reader is familiar with the project, so we will repeat the relevant findings in chapter 2 of this thesis. In addition, some sections have been expanded and changed as the thesis progressed. This sections with significant changes are: 2.1 "Trajectory Compression", 2.2 "Dynamic Time Warping", 2.7 R-trees. The remaining sections: 2.3 "Douglas-Peucker", 2.4 "SQUISH and SQUISH-E", 2.5 "PRESS", 2.6 "REST", are reused directly from the report. Here is the structure of this thesis:
-
+This thesis is a continuation of a project from the course \textit{TDT4151 - Computer Science, Specialization Project}. We do not assume that the reader is familiar with the project, so we will repeat the relevant findings in chapter 2 of this thesis. In addition, some sections have been expanded and changed as the thesis progressed. The sections with significant changes are: 2.1 "Trajectory Compression", 2.2 "Dynamic Time Warping", and 2.7 "R-trees". The remaining sections: 2.3 "Douglas-Peucker", 2.4 "SQUISH and SQUISH-E", 2.5 "PRESS", and 2.6 "REST", are reused directly from the report. Here is the structure of this thesis:\newline\newline
 \textbf{\hyperref[chap:bg]{Chapter~\ref*{chap:bg}}} summarizes the relevant theory, it is mostly based on the previous reports.
 \newline
 \textbf{\hyperref[chap:rel]{Chapter~\ref*{chap:rel}}} goes through work related to this thesis.
@@ -34,10 +33,10 @@ This thesis is a continuation of a project from the course \textit{TDT4151 - Com
 \newline
 \textbf{\hyperref[chap:res]{Chapter~\ref*{chap:res}}} presents the results of the experiments conducted and discusses them in relation to the research questions.
 \newline
-\textbf{\hyperref[chap:conclusion]{Chapter~\ref*{chap:conclusion}}} concludes the thesis by discussing the research questions in light of all results. It also mentions future work needed to further explore the topic.
+\textbf{\hyperref[chap:conclusion]{Chapter~\ref*{chap:conclusion}}} concludes the thesis by discussing the research questions in light of all results. It also mentions future work needed to further understand the topic.
 
 
-The source code for the algorithms and the experimental setup is available here:\\ https://github.com/Kilars/master-code/algo.
+The source code for the algorithms and the experimental setup is available here: https://github.com/Kilars/master-code/algo.
 % To see the contribution made to the open-source rust library see:
 % https://github.com/shshemi/dtw-rs/pull/1/files#diff-344ba2b71ffb93beac576f22ee219b4247385dd9b91f5f0b33ab583aab016427
 
