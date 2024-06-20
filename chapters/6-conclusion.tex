@@ -9,9 +9,9 @@ Secondly, we compare the runtime of REST to the variants. The spatial filter wit
 
 All in all, the only variant that satisfies both conditions of RQ1 is the spatial filter variant with KNN. The best example is, \textit{REST-SF120-KNN3}, which has 87\% of the compression ratio of REST, and is 9 times faster.
 
-RQ2 is about the comparisons of REST to other non reference-based methods, for which we used DP-DTW. DP-DTW has a much lower compression ratio than all REST variants, except for XREST. REST had a compression ratio of 5.55, while DP-DTW had 1.43, more than 3 times lower than REST. However, in terms of runtime, REST and DP-DTW were similar. This means REST itself does not outperform DP-DTW, but the sped up variants do. REST with a spatial filter and KNN significantly outperforms DP-DTW in both compression ratio and runtime.
+RQ2 is about the comparisons of REST to other non reference-based methods, for which we used DP-DTW. DP-DTW has a much lower compression ratio than REST. REST had a compression ratio of 5.55, while DP-DTW had 1.7, more than 3 times lower than REST. In terms of runtime, REST significantly outperforms DP-DTW, being 8 times faster. The sped up variants of REST are even faster. REST with a spatial filter and KNN significantly outperforms DP-DTW in both compression ratio and runtime.
 
-DP-DTW is used as a basis for non reference-based methods and in that regard REST variants seem to outperform them. However, a more comprehensive comparison of modern non reference-based compression algorithms, such as PRESS and SQUISH, should be conducted before any conclusion is drawn.
+DP-DTW is used as a basis for non reference-based methods and in that regard REST variants seem to outperform them. The DP-DTW algorithm is a very simple algorithm which leads to many expensive trajectory comparisons. Therefore, a more comprehensive comparison of modern non reference-based compression algorithms, such as PRESS and SQUISH, should be conducted before any conclusion is drawn for RQ2.
 
 To answer RQ3, we measured the ratio between the sample size and the size of the whole set. The experimental results show that a sample size 4\% of the dataset reaches a total compression ratio above 5. This indicates that the reference set generated from REST represents the data with high coverage, using a small sample size.
 
