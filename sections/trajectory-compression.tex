@@ -110,7 +110,7 @@ Additionally, \textcite{muller2007dynamic} introduces the term \textit{warping p
     }
     \label{fig:dtw_cost}
 \end{figure}
-\begin{figure}
+\begin{figure}[b!]
     \centering
     \begin{tabular}{|c|c|c|c|c|c|c|}
         \hline
@@ -125,10 +125,10 @@ Additionally, \textcite{muller2007dynamic} introduces the term \textit{warping p
     \caption{The DTW accumulated cost Matrix $M$ for vectors $A = [8, 3, 7, 4, 3]$ and $B = [9, 5, 2, 6, 4]$. The costs are based on the cost matrix in figure \ref{fig:dtw_cost}. The blue line shows the optimal path between the vectors. The optimal alignment from $A$ to $B$ is $[8\rightarrow9, 3\rightarrow(5, 2), 7\rightarrow6, 4\rightarrow4, 3\rightarrow4]$. The alignment cost (or DTW distance) is the value in the last matrix cell, in this case $M_{5,5} = 6$.}
     \label{fig:dtw_acc_cost}
     \begin{tikzpicture}[overlay, remember picture]
-        \draw[thick, blue, -, opacity=0.7] ($(pic cs:start1) + (0,7.45)$) -- ($(pic cs:end1) + (0,7.45)$);
-        \draw[thick, blue, -, opacity=0.7] ($(pic cs:end1) + (0,7.45)$) -- ($(pic cs:end2) + (0,7.45)$);
-        \draw[thick, blue, -, opacity=0.7] ($(pic cs:end2) + (0,7.45)$) -- ($(pic cs:end3) + (-0.25,7.45)$);
-        \draw[thick, blue, -, opacity=0.7] ($(pic cs:end3) + (-0.25,7.45)$) -- ($(pic cs:end4) + (-0.25,7.45)$);
+        \draw[thick, blue, -, opacity=0.7] ($(pic cs:start1) + (0,-14.25)$) -- ($(pic cs:end1) + (0,-14.25)$);
+        \draw[thick, blue, -, opacity=0.7] ($(pic cs:end1) + (0,-14.25)$) -- ($(pic cs:end2) + (0,-14.25)$);
+        \draw[thick, blue, -, opacity=0.7] ($(pic cs:end2) + (0,-14.25)$) -- ($(pic cs:end3) + (-0.25,-14.25)$);
+        \draw[thick, blue, -, opacity=0.7] ($(pic cs:end3) + (-0.25,-14.25)$) -- ($(pic cs:end4) + (-0.25,-14.25)$);
     \end{tikzpicture}
 \end{figure}
 
@@ -151,7 +151,7 @@ One challenge with DTW is that distances varies with the length of the vectors. 
     \end{aligned}
 \end{equation}
 This new cost function does not accumulate like in classical DTW, it simply represents the worst alignment of the optimal path to the current cell. The final cost represents the highest cost for a single alignment along the optimal path for the vectors. An example of a Max DTW cost matrix is shown in figure \ref{fig:max_dtw}, the vectors $A$ and $B$ are the same as in figure \ref{fig:dtw_acc_cost}. Here we can see that the end $M_{5,5} = 2$, this represents the highest cost along the optimal path, which is aligning $A_2 = 3$ to $B_2 = 5$, the cost $|A_2 - B_2| = 2$ is also the total cost for the vectors when applying Max DTW.
-\begin{figure}[t!]
+\begin{figure}[b!]
     \centering
     \begin{tabular}{|c|c|c|c|c|c|c|}
         \hline
@@ -164,10 +164,10 @@ This new cost function does not accumulate like in classical DTW, it simply repr
         3                                                & $\infty$           & 6        & 2                & $2$                & $3$      & $2$\tikzmark{end4} \\ \hline
     \end{tabular}
     \begin{tikzpicture}[overlay, remember picture]
-        \draw[thick, blue, -, opacity=0.7] ($(pic cs:start1) + (0,7.45)$) -- ($(pic cs:end1) + (0,7.45)$);
-        \draw[thick, blue, -, opacity=0.7] ($(pic cs:end1) + (0,7.45)$) -- ($(pic cs:end2) + (0,7.45)$);
-        \draw[thick, blue, -, opacity=0.7] ($(pic cs:end2) + (0,7.45)$) -- ($(pic cs:end3) + (-0.25,7.45)$);
-        \draw[thick, blue, -, opacity=0.7] ($(pic cs:end3) + (-0.25,7.45)$) -- ($(pic cs:end4) + (-0.25,7.45)$);
+        \draw[thick, blue, -, opacity=0.7] ($(pic cs:start1) + (0,-14.25)$) -- ($(pic cs:end1) + (0,-14.25)$);
+        \draw[thick, blue, -, opacity=0.7] ($(pic cs:end1) + (0,-14.25)$) -- ($(pic cs:end2) + (0,-14.25)$);
+        \draw[thick, blue, -, opacity=0.7] ($(pic cs:end2) + (0,-14.25)$) -- ($(pic cs:end3) + (-0.25,-14.25)$);
+        \draw[thick, blue, -, opacity=0.7] ($(pic cs:end3) + (-0.25,-14.25)$) -- ($(pic cs:end4) + (-0.25,-14.25)$);
     \end{tikzpicture}
     \caption{The Max DTW accumulated cost matrix $M$ for vectors $A = [8, 3, 7, 4, 3]$ and $B = [9, 5, 2, 6, 4]$. The costs are based on the cost matrix in figure \ref{fig:dtw_cost}. The blue line shows the optimal path between the vectors. The optimal alignment from $A$ to $B$ is $[8\rightarrow9, 3\rightarrow(5, 2), 7\rightarrow6, 4\rightarrow4, 3\rightarrow4]$. The alignment cost (or Max DTW distance) is the value in the last matrix cell, in this case $M_{5,5} = 2$.
     }

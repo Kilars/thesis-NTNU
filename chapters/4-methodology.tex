@@ -143,7 +143,7 @@ In order to compare REST with another compression strategy, DP-Max DTW was creat
 In this section, the experimental setup to answer the research questions is discussed. The questions require measuring the runtime and compression ratio of different algorithms. All experiments must be conducted on the same machine and with the same data. Therefore, an environment was set up on a virtual machine that loaded data and executed code based on input parameters.
 
 \subsection{Runtime}
-The runtime was measured from the beginning of the algorithm execution until the end. For REST, both reference set construction and trajectory compression were included in the runtime.
+The compression runtime was measured from the beginning of the algorithm execution until the end. For REST, both reference set construction and trajectory compression were included in the runtime.
 \subsection{Compression Ratio}
 To calculate the compression ratio for REST we need to track how many points are stored directly and how many are stored by reference, as well as keep track of the points in the reference set. Additionally, the sizes of the different element must be determined.
 
