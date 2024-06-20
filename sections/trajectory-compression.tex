@@ -182,7 +182,7 @@ The Sakoe-Chiba Band was suggested by \textcite{sakoe1978dynamic} as a global co
 
 This band reduces the runtime of the calculation, but also reduces the precision of the result. The band is centered around the diagonal and will therefore be most successful for series where the optimal warping path stays close to the diagonal \cite{sakoe1978dynamic}. This applies to series that are quite similar in length and location. Note that for series of dissimilar length the total cost will not necessarily be in $M_{n,m}$, but in the cell within the band size around the main diagonal that is closest to $M_{n,m}$. Distances in the matrix are calculated in Manhattan distance. As shown in Figure \ref{fig:dtw_band}, cells that are diagonal to the main diagonal do not fall within the band because their Manhattan distance from the main diagonal is two, while the band size is one.
 
-\begin{figure}
+\begin{figure}[h!]
     \centering
     \begin{tabular}{|c|c|c|c|c|c|c|}
         \hline
