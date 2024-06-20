@@ -11,18 +11,18 @@ The $\text{R}^*$-tree takes three new criteria into consideration to improve per
 \begin{figure}
     \centering
     \includegraphics[width=0.5\linewidth]{./figures/mbrs.png}
-    \caption{An example of data MBRs and their MBRs, from \cite{rtree}.}
+    \caption{An example of data MBRs and their MBRs, from \textcite{rtree}.}
     \label{fig:mbrs}
 \end{figure}
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{./figures/rtree.png}
-    \caption{The corresponding R-tree, from \cite{rtree}.}
+    \caption{The corresponding R-tree, from \textcite{rtree}.}
     \label{fig:rtree}
 \end{figure}
 
 \subsection{Hilbert R-tree}
-The Hilbert R-tree exists in both dynamic and static variants, the Hilbert R-tree, and the Packed Hilbert R-tree, respectively. The packed variant performed significantly better than the $\text{R}^*$-tree for point and range queries, according to empirical studies \cite{rtree}. One drawback of the Packed Hilbert R-tree is that it struggles with many dimensions. However, spatial data typically only uses one to three dimensions: x, y, and z. Therefore, it is well suited for static spatial data.
+The Hilbert R-tree exists in both dynamic and static variants, the Hilbert R-tree, and the Packed Hilbert R-tree, respectively. The packed variant performed significantly better than the $\text{R}^*$-tree for point and range queries, according to empirical studies \textcite{rtree}. One drawback of the Packed Hilbert R-tree is that it struggles with many dimensions. However, spatial data typically only uses one to three dimensions: x, y, and z. Therefore, it is well suited for static spatial data.
 
 To explain the Packed Hilbert R-tree the (dynamic) Hilbert R-tree must first be discussed. A Hilbert R-tree separates itself from other variants with the MBR selection. It utilizes Hilbert curves to generate MBRs for nodes. A Hilbert curve is a space-filling curve that can traverse every point in higher-dimensional space. This property allows for the mapping of two-dimensional values to one-dimensional values by drawing the curve in two dimensions and assigning ascending values to the points along the curve, see figure \ref{fig:hilbert} for Hilbert curves with corresponding values. These values are referred to as Hilbert values. Hilbert curves have the characteristic such that elements close in space will also be close in Hilbert values \cite{rtree}. By sorting MBRs based on the Hilbert value of the rectangle centroids, MBRs with minimal overlap can be created.
 
